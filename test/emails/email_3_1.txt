@@ -1,0 +1,56 @@
+First reply.
+
+This is fairly common; nothing too hard here!
+
+
+Am So., 1. Jan. 2023 um 17:22 Uhr schrieb John Doe <
+noreply@github.com>:
+
+> This is my second test reply. Should be the content.
+>
+>
+> Begin forwarded message:
+>
+> *From:* Veeam Support <support@veeam.com>
+> *Date:* 30. December 2022 at 06:54:30 CET
+> *To:* noreply@github.com
+> *Subject:* *Backup copy fails with: Failed to process method
+> Transform.Patch - Longer multiline subject
+>
+> Hello John,
+>
+> I've been working on adding a third reply to this mail's body. So far it
+> has been working great. Let's see how it handles with multi-line splitting.
+>
+> If we can decrypt it in the lab try to do the same on a production server.
+>
+> Have a nice day.
+>
+>
+> Best Regards,
+> Unknown Bandit
+> Veeam Cloud & Service Providers Support
+>
+> --------------- Original Message ---------------
+>
+> Note added: Done. [ ref:asdasdasd:ref ]
+>
+>
+
+Original Message processed by david®
+FW: Mails Resync: Encoding Konsistenz 9. August 2022, 12:44 Uhr
+Von Marine Ho
+An John Doe
+Cc (2) nobdoy|test
+
+Fourth reply. Not sure what to write anymore, but eh.
+
+
+On 07.08.2022 um 23:55, John Doe <noreply@github.com> wrote:
+
+
+Fifth reply. Or actually the original message? Who reads from
+bottom to top anyways in tests?
+
+
+
