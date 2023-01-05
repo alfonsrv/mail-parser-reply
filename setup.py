@@ -17,7 +17,7 @@ with open("README.md", "r") as fh:
 setup(
     name='mailparser_reply',
     version=version.VERSION,
-    description='eMail reply parser',
+    description='📧 Email reply parser library for Python with multi-language support',
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=['mailparser_reply'],

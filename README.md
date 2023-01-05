@@ -85,18 +85,20 @@ EmailMessage.text: Mail body
 EmailMessage.languages: Languages to use for parsing headers
 EmailMessage.replies: List of EmailReply; single parsed replies
 EmailMessage.include_english: Always include English language for parsing
-EmailMessage.default_language: Default language to use if language dictionary doesn't include
+EmailMessage.default_language: Default language to use if language dictionary 
+                               doesn't include
 
 EmailMessage.HEADER_REGEX: RegEx for identifying headers, separating mails
 EmailMessage.SIGNATURE_REGEX: RegEx for identifying signatures
 EmailMessage.DISCLAIMERS_REGEX: RegEx for identifying disclaimers
 
-EmailMessage.read(): Parse EmailMessage.text to EmailReply which are then stored in EmailMessage.replies
+EmailMessage.read(): Parse EmailMessage.text to EmailReply which are then stored 
+                     in EmailMessage.replies
 
 
 EmailReply.content: Unprocessed mail body with headers, signatures, disclaimers
-EmailReply.full_body: Mail body without headers
 EmailReply.body: Mail body without headers, signatures, disclaimers
+EmailReply.full_body: Mail body; just without headers
 
 EmailReply.headers: Identified Headers
 EmailReply.signatures: Identified Signatures
