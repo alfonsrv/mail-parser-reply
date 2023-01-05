@@ -15,18 +15,21 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='mailparser_reply',
+    name='mail-parser-reply',
     version=version.VERSION,
     description='📧 Email reply parser library for Python with multi-language support',
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=['mailparser_reply'],
     package_data={'mailparser_reply': ['../VERSION']},
-    author='Alfons Rau',
+    author='Alfons R.',
     author_email='alfonsrv@pm.me',
-    url='https://github.com/alfonsrv/mailparser-reply',
+    maintainer="Alfons R.",
+    maintainer_email='alfonsrv@pm.me',
+    url='https://github.com/alfonsrv/mail-parser-reply',
     license='MIT',
     test_suite='test',
+    keywords=['mail', 'email', 'parser'],
     classifiers=[
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',

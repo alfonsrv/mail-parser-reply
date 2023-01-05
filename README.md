@@ -59,7 +59,7 @@ Awesome! I haven't had another problem with it.
 ### Installation
 
 ```bash
-pip install mailparser-reply
+pip install mail-parser-reply
 ```
 
 ### Parse Replies
