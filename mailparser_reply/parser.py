@@ -41,6 +41,7 @@ class EmailReplyParser:
 @dataclass
 class EmailMessage:
     """ An email message represents a parsed email body. """
+
     #: Email message text body
     text: str
 
@@ -124,13 +125,14 @@ class EmailMessage:
         sent_from_regex = '|'.join([header for header in sent_from_regex if header])
         signatures = [self._get_language_regex(language=language, regex_key='signatures') for language in self.languages]
         signatures = '|'.join([header for header in signatures if header])
+
         # Matches the following signatures – when a signature is matched it's considered to move all the way
         # until the end of the mail body. Might be dangerous; but honestly how github/email_reply_parser works too
         #   1) Outlook-style signatures
         #   2) Idiot-filter phone email_reply_parser "Sent from my ..." (usually 1-3 words)
         #   3) Get Outlook for... / Sent from Outlook for iOS<https://greed.com">
         #   4) Regular signature-indicating stuff; e.g. "Best regards, ..."
-        # TODO: Add quotation optional
+        # TODO: Add quotation as optional matching
         self._signature_regex = re.compile(
             fr'(({DEFAULT_SIGNATURE_REGEX}|{OUTLOOK_MAIL_SEPARATOR}|' +   # 1)
             fr'\s*^{QUOTED_MATCH_INCLUDE}(?:{sent_from_regex}) ?(?:(?:[\w.<>:// ]+)|(?:\w+ ){1,3})$|'+  # 2) + 3)
@@ -191,8 +193,6 @@ class EmailMessage:
             if not _reply.content: continue
             self.replies.append(_reply)
 
-            # r.findall – get last or get until end?
-
         # Add last reply element that is otherwise skipped due to the way we're iterating over headers.
         # This also adds the message body as a whole, in case there are no email headers at all
         disclaimers, signatures = self._process_signatures_disclaimers(self.text[current_position:])
@@ -206,19 +206,6 @@ class EmailMessage:
 
         return self
 
-        # for count, line in enumerate(content):
-        #     if headers[0] not in line:
-        #         continue
-        #     # Possible candidate in line, but not enough text content
-        #     if len(content) < count + len(headers):
-        #
-        # for line in flat_text:
-        #     self._scan_line(line.strip())
-        #     # if line.strip(): TODO; allow overwrite
-        #     # TODO: Allow strip signatures + headers
-        #
-        # self._finish_reply()
-        # return self
 
 @dataclass
 class EmailReply:

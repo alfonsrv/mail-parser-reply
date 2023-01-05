@@ -24,6 +24,7 @@ mails in fragments instead of distinct replies. They also only support English.
 ⭐ Multilanguage Support  
 ⭐ Text-based mail parsing  
 ⭐ Detect headers, signatures and disclaimers  
+⭐ Fully type annotated  
 ⭐ Easy-to-read code and well-tested  
 
 
@@ -63,7 +64,46 @@ pip install mailparser-reply
 
 ### Parse Replies
 
-*API docs coming*
+```python
+from mailparser_reply import EmailReplyParser
+
+mail_body = 'foobar'; languages = ['en', 'de']
+mail_message = EmailReplyParser.read(text=mail_body, languages=languages)
+print(mail_message.replies)
+```
+
+*Or* get only the latest reply using:
+
+```python
+latest_reply = EmailReplyParser.parse_reply(text=mail_body, languages=languages)
+```
+
+### Parser API
+
+```
+EmailMessage.text: Mail body
+EmailMessage.languages: Languages to use for parsing headers
+EmailMessage.replies: List of EmailReply; single parsed replies
+EmailMessage.include_english: Always include English language for parsing
+EmailMessage.default_language: Default language to use if language dictionary doesn't include
+
+EmailMessage.HEADER_REGEX: RegEx for identifying headers, separating mails
+EmailMessage.SIGNATURE_REGEX: RegEx for identifying signatures
+EmailMessage.DISCLAIMERS_REGEX: RegEx for identifying disclaimers
+
+EmailMessage.read(): Parse EmailMessage.text to EmailReply which are then stored in EmailMessage.replies
+
+
+EmailReply.content: Unprocessed mail body with headers, signatures, disclaimers
+EmailReply.full_body: Mail body without headers
+EmailReply.body: Mail body without headers, signatures, disclaimers
+
+EmailReply.headers: Identified Headers
+EmailReply.signatures: Identified Signatures
+EmailReply.disclaimers: Identified disclaimers
+```
+
+
 
 ---
 
