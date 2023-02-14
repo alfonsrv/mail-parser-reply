@@ -16,7 +16,7 @@ QUOTED_MATCH_INCLUDE = r'(?:> ?)*'
 #: used within signatures
 OUTLOOK_MAIL_SEPARATOR = r'(\n{2,} ?[_-]{32,})'
 #: Common mail separators (+ old Outlook separator)
-GENERIC_MAIL_SEPARATOR = r'^-{5,} ?Original Message ?-{5,}$'  # unused
+GENERIC_MAIL_SEPARATOR = r'^-{5,} ?Original Message ?-{5,}$'
 
 #: Outlook Signature defaults; line optionally starts with whitespace, contains two
 #: hyphens or underscores, and ends with optional whitespace.

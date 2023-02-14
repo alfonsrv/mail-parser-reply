@@ -1,12 +1,13 @@
 import os
 import sys
 import unittest
-import re
+import logging
 
-from mailparser_reply.constants import MAIL_LANGUAGE_DEFAULT
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+base_path = os.path.realpath(os.path.dirname(__file__))
+root = os.path.join(base_path, '..')
+sys.path.append(root)
 from mailparser_reply import EmailReplyParser
+from mailparser_reply.constants import MAIL_LANGUAGE_DEFAULT
 
 
 class EmailMessageTest(unittest.TestCase):
@@ -306,4 +307,5 @@ class EmailMessageTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO, stream=sys.stderr)
     unittest.main()

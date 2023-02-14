@@ -9,7 +9,8 @@ from typing import Union, List, Optional, Tuple
 from typing.re import Pattern
 
 from .constants import MAIL_LANGUAGES, MAIL_LANGUAGE_DEFAULT, OUTLOOK_MAIL_SEPARATOR, QUOTED_REMOVAL_REGEX, \
-    SINGLE_SPACE_VARIATIONS, SENTENCE_START, OPTIONAL_LINEBREAK, DEFAULT_SIGNATURE_REGEX, QUOTED_MATCH_INCLUDE
+    SINGLE_SPACE_VARIATIONS, SENTENCE_START, OPTIONAL_LINEBREAK, DEFAULT_SIGNATURE_REGEX, QUOTED_MATCH_INCLUDE, \
+    GENERIC_MAIL_SEPARATOR
 
 logger = logging.getLogger(__name__)
 
@@ -113,6 +114,7 @@ class EmailMessage:
         if self._header_regex: return self._header_regex
         regex_headers = [self._get_language_regex(language=language, regex_key='wrote_header') for language in self.languages]
         regex_headers += [self._get_language_regex(language=language, regex_key='from_header') for language in self.languages]
+        regex_headers.append(f'(?:{GENERIC_MAIL_SEPARATOR})')
         regex_headers = '|'.join([header for header in regex_headers if header])
         self._header_regex = re.compile(regex_headers, flags=re.MULTILINE | re.IGNORECASE)
         logger.debug(f'Mail Header RegEx: "{self._header_regex.pattern!r}"')
