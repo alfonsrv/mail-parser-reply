@@ -234,7 +234,7 @@ class EmailReply:
         """ Returns the message's body without the headers, signatures and disclaimers """
         _body = self.content
         for disclaimer in self.disclaimers:
-            _body = _body.replace(disclaimer)
+            _body = _body.replace(disclaimer, '')
         if self.signatures:
             _body = _body.replace(self.signatures, '')
         return _body.replace(self.headers or '', '').strip()
