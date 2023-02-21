@@ -1,7 +1,7 @@
 # Mail Reply Parser 📧🐍 
 
 [![Python](https://img.shields.io/badge/Made%20with-Python%203.x-blue.svg?style=flat-square&logo=Python&logoColor=white)](https://www.python.org/) 
-[![Version](https://img.shields.io/badge/Version-1.0-dc2f02.svg?style=flat-square&logoColor=white)](https://github.com/alfonsrv/mail-parser-reply)
+[![Version](https://img.shields.io/badge/Version-1.2-dc2f02.svg?style=flat-square&logoColor=white)](https://github.com/alfonsrv/mail-parser-reply)
 
 
 ### Multi-language email reply parsing for international environments 🌍
