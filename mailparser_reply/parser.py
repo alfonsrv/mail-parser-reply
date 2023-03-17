@@ -102,7 +102,7 @@ class EmailMessage:
         ]).replace(' ', SINGLE_SPACE_VARIATIONS)
 
         self._disclaimers_regex = re.compile(
-            f'{SENTENCE_START}(?:{disclaimers})(?:{OPTIONAL_LINEBREAK}{ALLOW_ANY_EXTENSION}?(?:mail){ALLOW_ANY_EXTENSION}){{1,2}}',
+            f'{SENTENCE_START}(?:{disclaimers})(?:{OPTIONAL_LINEBREAK}{ALLOW_ANY_EXTENSION}?{ALLOW_ANY_EXTENSION}){{1,2}}',
             flags=re.MULTILINE | re.IGNORECASE
         )
         logger.debug(f'Mail Disclaimer RegEx: "{self._disclaimers_regex.pattern!r}"')
