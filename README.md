@@ -68,14 +68,14 @@ pip install mail-parser-reply
 from mailparser_reply import EmailReplyParser
 
 mail_body = 'foobar'; languages = ['en', 'de']
-mail_message = EmailReplyParser.read(text=mail_body, languages=languages)
+mail_message = EmailReplyParser(languages=languages).read(text=mail_body)
 print(mail_message.replies)
 ```
 
 *Or* get only the latest reply using:
 
 ```python
-latest_reply = EmailReplyParser.parse_reply(text=mail_body, languages=languages)
+latest_reply = EmailReplyParser(languages=languages).parse_reply(text=mail_body)
 ```
 
 ### Parser API
