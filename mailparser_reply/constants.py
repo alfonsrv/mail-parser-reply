@@ -91,6 +91,14 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         ],
         'sent_from': r'Envoy\u00e9 depuis'
     },
+    'it': {
+        'wrote_header': r'^(?!Il[.\s]*Il\s(.+?\s?.+?)\sha scritto:)(' + QUOTED_MATCH_INCLUDE + r'Il\s(?:.+?\s?.+?)\s?ha scritto:)$',
+        'from_header': r'((?:(?:^|\n|\n' + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Da|Inviato|A|Oggetto|Data|Cc):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'signatures': [
+            'Cordiali saluti',
+        ],
+        'sent_from': 'Inviato da'
+    },
     'david': {
         # Custom Software Headers – also kind of like a language, right?
         'from_header': r'((?:^ *Original Message processed by david.+?$\n{,7})(?:.*\n){,3}(?:(?:^|\n)[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
