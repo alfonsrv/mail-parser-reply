@@ -11,7 +11,7 @@ Mail clients handle reply formatting differently, making reliable parsing diffic
 headers produced by different, multilingual clients usually indicating separation.
 
 Replies can either present the whole mail message body, or strip headers, signatures and common disclaimers if required. 
-Currently supported languages are: English (`en`), German (`de`), French (`fr`) – adding more languages is quite easy.
+Currently supported languages are: English (`en`), German (`de`), French (`fr`), Italian (`it`) – adding more languages is quite easy.
 
 This is an improved Python implementation of GitHub's Ruby-based [email_reply_parser](https://github.com/github/email_reply_parser/) 
 and an adaptation of Zapier's [email-reply-parser](https://github.com/zapier/email-reply-parser) which both split the 
