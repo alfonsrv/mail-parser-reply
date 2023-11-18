@@ -107,13 +107,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
                        + QUOTED_MATCH_INCLUDE
                        + r")[* ]*(?:From|Sent|To|Subject|Date|Cc):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})",
         "disclaimers": [],
-        "signatures": [
-            "以上、よろしくお願いいたします",
-            "以上、よろしくお願い致します",
-            "よろしくお願い",
-            "どうぞよろしくお願いいたします。",
-        ],
-        "sent_from": "iPhone から送信",
+        "signatures": [],
+        "sent_from": "",
     },
     'david': {
         # Custom Software Headers – also kind of like a language, right?
