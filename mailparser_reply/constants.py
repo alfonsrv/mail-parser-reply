@@ -99,6 +99,22 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         ],
         'sent_from': 'Inviato da'
     },
+    "ja": {
+        "wrote_header": r"^(?!.*\d{4}年\d{1,2}月\d{1,2}日\(.\) \d{1,2}:\d{2}.+? <.+?>:.*\d{4}年\d{1,2}月\d{1,2}日\(.\) \d{1,2}:\d{2}.+? <.+?>:)("
+                        + QUOTED_MATCH_INCLUDE
+                        + r"\d{4}年\d{1,2}月\d{1,2}日\(.\) \d{1,2}:\d{2}.+? <.+?>):$",
+        "from_header": r"((?:(?:^|\n|\n"
+                       + QUOTED_MATCH_INCLUDE
+                       + r")[* ]*(?:From|Sent|To|Subject|Date|Cc):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})",
+        "disclaimers": [],
+        "signatures": [
+            "以上、よろしくお願いいたします",
+            "以上、よろしくお願い致します",
+            "よろしくお願い",
+            "どうぞよろしくお願いいたします。",
+        ],
+        "sent_from": "iPhone から送信",
+    },
     'david': {
         # Custom Software Headers – also kind of like a language, right?
         'from_header': r'((?:^ *Original Message processed by david.+?$\n{,7})(?:.*\n){,3}(?:(?:^|\n)[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'

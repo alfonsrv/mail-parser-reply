@@ -115,6 +115,19 @@ class EmailMessageTest(unittest.TestCase):
         self.assertTrue("Here is another email\n\nSent from my desk, is much easier than my mobile phone." == mail.replies[0].body)
         self.assertTrue("" == mail.replies[0].signatures)
 
+    def test_ja_simple_body(self):
+        mail = self.get_email('email_ja_1_1', parse=True, languages=['ja'])
+        self.assertEqual(1, len(mail.replies))
+        self.assertTrue("こんにちは" in mail.replies[0].body)
+
+    def test_ja_simple_quoted_reply(self):
+        mail = self.get_email('email_ja_1_2', parse=True, languages=['ja'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertTrue("お世話になっております。織田です。" in mail.replies[0].body)
+        self.assertTrue("それでは 11:00 にお待ちしております。" in mail.replies[0].body)
+        self.assertTrue("かしこまりました" in mail.replies[1].body)
+        self.assertTrue("明日の 11:00 でお願いいたします" in mail.replies[1].body)
+
     def get_email(self, name: str, parse: bool = True, languages: list = None):
         """ Return EmailMessage instance or text content """
         with open(f'emails/{name}.txt') as f:
