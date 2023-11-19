@@ -11,7 +11,8 @@ Mail clients handle reply formatting differently, making reliable parsing diffic
 headers produced by different, multilingual clients usually indicating separation.
 
 Replies can either present the whole mail message body, or strip headers, signatures and common disclaimers if required. 
-Currently supported languages are: English (`en`), German (`de`), French (`fr`), Italian (`it`) – adding more languages is quite easy.
+Currently supported languages are: English (`en`), German (`de`), French (`fr`), Italian (`it`) and Japanese (`ja`) – 
+adding more languages is quite easy.
 
 This is an improved Python implementation of GitHub's Ruby-based [email_reply_parser](https://github.com/github/email_reply_parser/) 
 and an adaptation of Zapier's [email-reply-parser](https://github.com/zapier/email-reply-parser) which both split the 
@@ -81,27 +82,28 @@ latest_reply = EmailReplyParser(languages=languages).parse_reply(text=mail_body)
 ### Parser API
 
 ```
-EmailMessage.text: Mail body
-EmailMessage.languages: Languages to use for parsing headers
-EmailMessage.replies: List of EmailReply; single parsed replies
-EmailMessage.include_english: Always include English language for parsing
-EmailMessage.default_language: Default language to use if language dictionary 
-                               doesn't include
+EmailMessage.text:              Mail body
+EmailMessage.languages:         Languages to use for parsing headers
+EmailMessage.replies:           List of EmailReply; single parsed replies
+EmailMessage.include_english:   Always include English language for parsing
+EmailMessage.default_language:  Default language to use if language dictionary 
+                                doesn't include
 
-EmailMessage.HEADER_REGEX: RegEx for identifying headers, separating mails
-EmailMessage.SIGNATURE_REGEX: RegEx for identifying signatures
+EmailMessage.HEADER_REGEX:      RegEx for identifying headers, separating mails
+EmailMessage.SIGNATURE_REGEX:   RegEx for identifying signatures
 EmailMessage.DISCLAIMERS_REGEX: RegEx for identifying disclaimers
 
 EmailMessage.read(): Parse EmailMessage.text to EmailReply which are then stored 
                      in EmailMessage.replies
+```
 
+```
+EmailReply.content:     Unprocessed mail body with headers, signatures, disclaimers
+EmailReply.body:        Mail body without headers, signatures, disclaimers
+EmailReply.full_body:   Mail body; just without headers
 
-EmailReply.content: Unprocessed mail body with headers, signatures, disclaimers
-EmailReply.body: Mail body without headers, signatures, disclaimers
-EmailReply.full_body: Mail body; just without headers
-
-EmailReply.headers: Identified Headers
-EmailReply.signatures: Identified Signatures
+EmailReply.headers:     Identified Headers
+EmailReply.signatures:  Identified Signatures
 EmailReply.disclaimers: Identified disclaimers
 ```
 
