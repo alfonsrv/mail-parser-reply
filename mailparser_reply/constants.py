@@ -145,4 +145,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         ],
         'sent_from': 'Verzonden vanaf mijn',
     },
+    'david': {
+        # Custom Software Headers – also kind of like a language, right?
+        'from_header': r'((?:^ *Original Message processed by david.+?$\n{,7})(?:.*\n){,3}(?:(?:^|\n)[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
+    }
 }
