@@ -118,11 +118,12 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             ],
         "signatures": [
             "Z poważaniem", 
+            "Z powazaniem", 
             "Pozdrawiam", 
             "W przypadku niejasności, proszę o kontakt."
             ],
         "sent_from": "Wysłano z"
-    }
+    },
     'david': {
         # Custom Software Headers – also kind of like a language, right?
         'from_header': r'((?:^ *Original Message processed by david.+?$\n{,7})(?:.*\n){,3}(?:(?:^|\n)[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
