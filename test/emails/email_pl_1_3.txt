@@ -1,0 +1,11 @@
+Od: Jan Kowalski <jan.kowalski@example.com>
+Wysłano: środa, 1 marca 2023 12:00
+Do: Anna Nowak <anna.nowak@example.com>
+Temat: Test email
+
+Cześć Anno,
+
+Jak się masz?
+
+Z poważaniem,
+Jan
