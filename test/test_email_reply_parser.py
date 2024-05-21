@@ -128,6 +128,29 @@ class EmailMessageTest(unittest.TestCase):
         self.assertTrue("かしこまりました" in mail.replies[1].body)
         self.assertTrue("明日の 11:00 でお願いいたします" in mail.replies[1].body)
 
+    def test_pl_simple_body(self):
+        mail = self.get_email('email_pl_1_1', parse=True, languages=['pl'])
+        self.assertEqual(1, len(mail.replies))
+        self.assertTrue("Cześć Anno" in mail.replies[0].body)
+        self.assertTrue("Pozdrawiam,\nJan" in mail.replies[0].signatures)
+        self.assertTrue("Pozdrawiam,\nJan" not in mail.replies[0].body)
+
+    def test_pl_simple_quoted_reply(self):
+        mail = self.get_email('email_pl_1_2', parse=True, languages=['pl'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertTrue("Dnia 28 lutego 2023 14:00 Anna Nowak <anna.nowak@example.com> napisał(a):" in mail.replies[1].content)
+        self.assertTrue("Dnia 28 lutego 2023 14:00 Anna Nowak <anna.nowak@example.com> napisał(a):" not in mail.replies[1].body)
+        self.assertTrue("> Cześć Janie," in mail.replies[1].body)
+        self.assertTrue("> Pozdrawiam," in mail.replies[1].content)
+        self.assertTrue("> Pozdrawiam," in mail.replies[1].signatures)
+        self.assertTrue("> Pozdrawiam," not in mail.replies[1].body)
+
+    def test_pl_simple_signature(self):
+        mail = self.get_email('email_pl_1_3', parse=True, languages=['pl'])
+        self.assertEqual(1, len(mail.replies))
+        self.assertTrue("Z poważaniem,\nJan" in mail.replies[0].signatures)
+        self.assertTrue("Z poważaniem,\nJan" not in mail.replies[0].body)
+
     def get_email(self, name: str, parse: bool = True, languages: list = None):
         """ Return EmailMessage instance or text content """
         with open(f'test/emails/{name}.txt') as f:
