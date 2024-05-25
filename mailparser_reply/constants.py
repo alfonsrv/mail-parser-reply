@@ -1,6 +1,6 @@
-#: Fallback language if no other language is specified
 from typing import Dict
 
+#: Fallback language if no other language is specified
 MAIL_LANGUAGE_DEFAULT = 'en'
 
 #: Matches text-mail quotation (usually starting with ">");
@@ -129,4 +129,3 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         'from_header': r'((?:^ *Original Message processed by david.+?$\n{,7})(?:.*\n){,3}(?:(?:^|\n)[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
     },
 }
-
