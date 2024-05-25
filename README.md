@@ -11,7 +11,7 @@ Mail clients handle reply formatting differently, making reliable parsing diffic
 headers produced by different, multilingual clients usually indicating separation.
 
 Replies can either present the whole mail message body, or strip headers, signatures and common disclaimers if required. 
-Currently supported languages are: English (`en`), German (`de`), French (`fr`), Italian (`it`) and Japanese (`ja`) – 
+Currently supported languages are: English (`en`), German (`de`), French (`fr`), Italian (`it`), Japanese (`ja`), Polish (`pl`) – 
 adding more languages is quite easy.
 
 This is an improved Python implementation of GitHub's Ruby-based [email_reply_parser](https://github.com/github/email_reply_parser/) 
@@ -79,6 +79,7 @@ print(mail_message.replies)
 latest_reply = EmailReplyParser(languages=languages).parse_reply(text=mail_body)
 ```
 
+
 ### Parser API
 
 ```
@@ -87,7 +88,7 @@ EmailMessage.languages:         Languages to use for parsing headers
 EmailMessage.replies:           List of EmailReply; single parsed replies
 EmailMessage.include_english:   Always include English language for parsing
 EmailMessage.default_language:  Default language to use if language dictionary 
-                                doesn't include
+                                doesn't include any other language codes
 
 EmailMessage.HEADER_REGEX:      RegEx for identifying headers, separating mails
 EmailMessage.SIGNATURE_REGEX:   RegEx for identifying signatures

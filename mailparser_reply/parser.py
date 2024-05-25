@@ -38,7 +38,6 @@ class EmailReplyParser:
         return self.read(text).latest_reply
 
 
-
 @dataclass
 class EmailMessage:
     """ An email message represents a parsed email body. """
