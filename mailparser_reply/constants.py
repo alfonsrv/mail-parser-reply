@@ -58,9 +58,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         # <QUOTED_MATCH_INCLUDE> – allow matching this inside quoted levels
         # On\s(?:.+?\s?.+?)\swrote:) – match 'On 01.01.2025, John Doe wrote:'
         #   See multiline_on.txt for example data
-        'wrote_header': r'^(?!On[.\s]*On\s(.+?\s?.+?)\swrote:)('
-                        + QUOTED_MATCH_INCLUDE
-                        + r'On\s(?:.+?\s?.+?)\s?wrote:)$',
+        'wrote_header': r'^(?!On[.\s]*On\s(.+?\s?.+?)\swrote:)(' + QUOTED_MATCH_INCLUDE + r'On\s(?:.+?\s?.+?)\s?wrote:)$',
+        # Outlook-style header
         # (?:(?:^|\n)[* ]*(?:From|Sent|To|Subject|Date|Cc):[ *]* – match From:/*From*:, ... headers
         # (?:\s{,2}).*){2,} – allow multi-line headers; some clients split the headers up into multiple lines.
         #       Also require at least two occurrences of the above pattern; e.g. From: ...\n Sent: ...
