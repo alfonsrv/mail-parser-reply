@@ -110,9 +110,23 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         "signatures": [],
         "sent_from": "",
     },
+    "pl": {
+        'wrote_header': r'^(?!Dnia[.\s]*Dnia\s(.+?\s?.+?)\snadesłał:)(' + QUOTED_MATCH_INCLUDE + r'Dnia\s(?:.+?\s?.+?)\s?nadesłał:)$',
+        'from_header': r'((?:(?:^|\n|\n' + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Od|Wysłano|Do|Temat|Data|DW):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        "disclaimers": [
+            "Uwaga:"
+            ],
+        "signatures": [
+            "Z poważaniem", 
+            "Z powazaniem", 
+            "Pozdrawiam", 
+            "W przypadku niejasności, proszę o kontakt."
+            ],
+        "sent_from": "Wysłano z"
+    },
     'david': {
         # Custom Software Headers – also kind of like a language, right?
         'from_header': r'((?:^ *Original Message processed by david.+?$\n{,7})(?:.*\n){,3}(?:(?:^|\n)[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
-    }
+    },
 }
 
