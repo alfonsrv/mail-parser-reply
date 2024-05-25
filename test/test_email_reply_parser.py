@@ -128,6 +128,21 @@ class EmailMessageTest(unittest.TestCase):
         self.assertTrue("かしこまりました" in mail.replies[1].body)
         self.assertTrue("明日の 11:00 でお願いいたします" in mail.replies[1].body)
 
+    # Dutch language
+    def test_dutch_simple_body(self):
+        mail = self.get_email('email_nl_1_1', parse=True, languages=['nl'])
+        self.assertEqual(1, len(mail.replies))
+        self.assertTrue("riak-gebruikers" in mail.replies[0].content)
+        self.assertTrue("riak-gebruikers" in mail.replies[0].signatures)
+        self.assertTrue("riak-gebruikers" not in mail.replies[0].body)
+
+    def test_dutch_gmail_header(self):
+        mail = self.get_email('email_nl_1_2', parse=True, languages=['nl'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertTrue("Outlook met een antwoord\n\n\n------------------------------" == mail.replies[0].body)
+        self.assertTrue("Google Apps Sync Team [mailto:mail-noreply@google.com]" in mail.replies[1].headers)
+        self.assertTrue("Google Apps Sync Team [mailto:mail-noreply@google.com]" not in mail.replies[1].body)
+
     def get_email(self, name: str, parse: bool = True, languages: list = None):
         """ Return EmailMessage instance or text content """
         with open(f'test/emails/{name}.txt') as f:
