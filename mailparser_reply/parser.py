@@ -137,7 +137,7 @@ class EmailMessage:
         self._signature_regex = re.compile(
             fr'(({DEFAULT_SIGNATURE_REGEX}|{OUTLOOK_MAIL_SEPARATOR}|' +   # 1)
             fr'\s*^{QUOTED_MATCH_INCLUDE}(?:{sent_from_regex}) ?(?:(?:[\w.<>:// ]+)|(?:\w+ ){1,3})$|'+  # 2) + 3)
-            fr'^{QUOTED_MATCH_INCLUDE}(?:{signatures}))(.|\s)*)',  # 4)
+            fr'(?<!\A)^{QUOTED_MATCH_INCLUDE}(?:{signatures}))(.|\s)*)',  # 4)
             flags=re.MULTILINE | re.IGNORECASE
         )
         logger.debug(f'Mail Signature RegEx: "{self._signature_regex.pattern!r}"')
