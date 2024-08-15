@@ -1,0 +1,12 @@
+Hallo allemaal,
+
+Wat is de beste manier om een Riak-bucket met alle sleutels en waarden te legen na het uitvoeren van een test?
+Ik gebruik momenteel de Java HTTP API.
+
+-Maarten de Jong
+
+
+_______________________________________________
+riak-gebruikers mailing list
+riak-gebruikers@lijsten.basho.com
+http://lijsten.basho.com/mailman/listinfo/riak-gebruikers_lijsten.basho.com
