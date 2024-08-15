@@ -1,7 +1,7 @@
 # Mail Reply Parser 📧🐍 
 
 [![Python](https://img.shields.io/badge/Made%20with-Python%203.x-blue.svg?style=flat-square&logo=Python&logoColor=white)](https://www.python.org/) 
-[![Version](https://img.shields.io/badge/Version-1.2-dc2f02.svg?style=flat-square&logoColor=white)](https://github.com/alfonsrv/mail-parser-reply)
+[![Version](https://img.shields.io/badge/Version-1.3-dc2f02.svg?style=flat-square&logoColor=white)](https://github.com/alfonsrv/mail-parser-reply)
 
 
 ### Multi-language email reply parsing for international environments 🌍
@@ -11,8 +11,18 @@ Mail clients handle reply formatting differently, making reliable parsing diffic
 headers produced by different, multilingual clients usually indicating separation.
 
 Replies can either present the whole mail message body, or strip headers, signatures and common disclaimers if required. 
-Currently supported languages are: English (`en`), German (`de`), French (`fr`), Italian (`it`), Japanese (`ja`), Polish (`pl`) – 
-adding more languages is quite easy.
+Currently supported languages are: 
+
+* Dutch (`nl`) 🇳🇱
+* English (`en`) 🇬🇧
+* French (`fr`) 🇫🇷
+* German (`de`) 🇩🇪
+* Italian (`it`) 🇮🇹
+* Japanese (`ja`) 🇯🇵
+* Polish (`pl`) 🇵🇱 
+
+
+🏳️‍🌈 **Adding more languages is quite easy!**
 
 This is an improved Python implementation of GitHub's Ruby-based [email_reply_parser](https://github.com/github/email_reply_parser/) 
 and an adaptation of Zapier's [email-reply-parser](https://github.com/zapier/email-reply-parser) which both split the 
@@ -94,18 +104,18 @@ EmailMessage.HEADER_REGEX:      RegEx for identifying headers, separating mails
 EmailMessage.SIGNATURE_REGEX:   RegEx for identifying signatures
 EmailMessage.DISCLAIMERS_REGEX: RegEx for identifying disclaimers
 
-EmailMessage.read(): Parse EmailMessage.text to EmailReply which are then stored 
-                     in EmailMessage.replies
+EmailMessage.read():             Parse EmailMessage.text to EmailReply which
+                                 are then stored in EmailMessage.replies
 ```
 
 ```
-EmailReply.content:     Unprocessed mail body with headers, signatures, disclaimers
-EmailReply.body:        Mail body without headers, signatures, disclaimers
-EmailReply.full_body:   Mail body; just without headers
+EmailReply.content:              Unprocessed mail body with headers, signatures, disclaimers
+EmailReply.body:                 Mail body without headers, signatures, disclaimers
+EmailReply.full_body:            Mail body; just without headers
 
-EmailReply.headers:     Identified Headers
-EmailReply.signatures:  Identified Signatures
-EmailReply.disclaimers: Identified disclaimers
+EmailReply.headers:              Identified Headers
+EmailReply.signatures:           Identified Signatures
+EmailReply.disclaimers:          Identified disclaimers
 ```
 
 
