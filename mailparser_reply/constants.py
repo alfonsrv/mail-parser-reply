@@ -3,13 +3,13 @@ from typing import Dict
 #: Fallback language if no other language is specified
 MAIL_LANGUAGE_DEFAULT = 'en'
 
-#: Matches text-mail quotation (usually starting with '>');
-#: resulting in '> Hello world'
+#: Matches text-mail quotation (usually starting with ">");
+#: resulting in "> Hello world"
 QUOTED_REGEX = r'(>+)'
 #: Regex to remove all leading quotations
 QUOTED_REMOVAL_REGEX = r'^(> *)'
 #: Allow to match within (multi)-quoted body
-#: e.g. allowing regex to match *inside* lines starting with '> > ...'
+#: e.g. allowing regex to match *inside* lines starting with "> > ..."
 QUOTED_MATCH_INCLUDE = r'(?:> ?)*'
 
 #: Outlook-style mail separator (32 underscores); also occasionally
@@ -57,7 +57,7 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         # ^(?!On[.\s]*On\s(.+?\s?.+?)\swrote:) – Negative lookahead, see:
         #    https://github.com/github/email_reply_parser/pull/31
         # <QUOTED_MATCH_INCLUDE> – allow matching this inside quoted levels
-        # On\s(?:.+?\s?.+?)\swrote:) – match 'On 01.01.2025, John Doe wrote:'
+        # On\s(?:.+?\s?.+?)\swrote:) – match "On 01.01.2025, John Doe wrote:"
         #   See multiline_on.txt for example data
         'wrote_header': r'^(?!On[.\s]*On\s(.+?\s?.+?)\swrote:)(' + QUOTED_MATCH_INCLUDE + r'On\s(?:.+?\s?.+?)\s?wrote:)$',
         # Outlook-style header
@@ -145,19 +145,23 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         ],
         'sent_from': 'Verzonden vanaf mijn',
     },
-    "pl": {
-        'wrote_header': r'^(?!Dnia[.\s]*Dnia\s(.+?\s?.+?)\snadesłał:)(' + QUOTED_MATCH_INCLUDE + r'Dnia\s(?:.+?\s?.+?)\s?nadesłał:)$',
-        'from_header': r'((?:(?:^|\n|\n' + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Od|Wysłano|Do|Temat|Data|DW):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
-        "disclaimers": [
-            "Uwaga:"
-            ],
-        "signatures": [
-            "Z poważaniem",
-            "Z powazaniem",
-            "Pozdrawiam",
-            "W przypadku niejasności, proszę o kontakt."
-            ],
-        "sent_from": "Wysłano z"
+    'pl': {
+        'wrote_header': r'^(?!Dnia[.\s]*Dnia\s(.+?\s?.+?)\snadesłał:)(' 
+                        + QUOTED_MATCH_INCLUDE 
+                        + r'Dnia\s(?:.+?\s?.+?)\s?nadesłał:)$',
+        'from_header': r'((?:(?:^|\n|\n' 
+                       + QUOTED_MATCH_INCLUDE 
+                       + r')[* ]*(?:Od|Wysłano|Do|Temat|Data|DW):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            'Uwaga:'
+        ],
+        'signatures': [
+            'Z poważaniem',
+            'Z powazaniem',
+            'Pozdrawiam',
+            'W przypadku niejasności, proszę o kontakt.'
+        ],
+        'sent_from': 'Wysłano z'
     },
     'david': {
         # Custom Software Headers – also kind of like a language, right?
