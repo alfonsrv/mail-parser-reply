@@ -150,6 +150,10 @@ class EmailMessageTest(unittest.TestCase):
         self.assertTrue("Z powazaniem,\nJan" in mail.replies[0].signatures)
         self.assertTrue("Z powazaniem,\nJan" not in mail.replies[0].body)
 
+    def test_header_begins_w_signature(self):
+        mail = self.get_email('begins_with_signature', parse=True, languages=['en'])
+        self.assertTrue(mail.replies[0].signatures. startswith("Regards,"))
+
     def get_email(self, name: str, parse: bool = True, languages: list = None):
         """ Return EmailMessage instance or text content """
         with open(f'test/emails/{name}.txt') as f:
