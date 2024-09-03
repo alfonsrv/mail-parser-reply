@@ -70,6 +70,12 @@ class EmailMessage:
             self.languages.append('en')
         self._normalize_text()
 
+    def __str__(self):
+        return self.text
+
+    def __repr__(self):
+        return f'<EmailMessage {self.languages=} {len(self.replies)} replies,>'
+
     @property
     def latest_reply(self) -> Union[str, None]:
         """ Captures the latest reply message within email """
@@ -227,6 +233,12 @@ class EmailReply:
         self.headers = self.headers.strip()
         self.signatures = self.signatures.strip()
         self.disclaimers = [d.strip() for d in self.disclaimers]
+
+    def __str__(self):
+        return self.full_body
+
+    def __repr__(self):
+        return f'<EmailReply: {str(self)[:64] + "..." if len(str(self)) > 64 else str(self)}'
 
     @property
     def body(self) -> str:

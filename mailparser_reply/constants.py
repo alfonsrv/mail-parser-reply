@@ -40,7 +40,7 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
                         + r'Am\s(?:.+?\s?)schrieb\s(?:.+?\s?.+?):)$',
         'from_header': r'((?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE
-                       + r')[* ]*(?:Von|Gesendet|An|Betreff|Datum):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+                       + r')[* ]*(?:Von|Gesendet|An|Betreff|Datum|Cc|Organisation):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
         'disclaimers': [
             '(?:Wichtiger )?Hinweis:',
             'Achtung:',
@@ -67,7 +67,7 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         # (?:\n.*){,1} – allow optional subject or other broken multi-line at the end
         'from_header': r'((?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE
-                       + r')[* ]*(?:From|Sent|To|Subject|Date|Cc):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+                       + r')[* ]*(?:From|Sent|To|Subject|Date|Cc|Organization):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
         'disclaimers': [
             'CAUTION:',
             'Disclaimer:',
@@ -146,11 +146,11 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         'sent_from': 'Verzonden vanaf mijn',
     },
     'pl': {
-        'wrote_header': r'^(?!Dnia[.\s]*Dnia\s(.+?\s?.+?)\snadesłał:)(' 
-                        + QUOTED_MATCH_INCLUDE 
+        'wrote_header': r'^(?!Dnia[.\s]*Dnia\s(.+?\s?.+?)\snadesłał:)('
+                        + QUOTED_MATCH_INCLUDE
                         + r'Dnia\s(?:.+?\s?.+?)\s?nadesłał:)$',
-        'from_header': r'((?:(?:^|\n|\n' 
-                       + QUOTED_MATCH_INCLUDE 
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
                        + r')[* ]*(?:Od|Wysłano|Do|Temat|Data|DW):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
         'disclaimers': [
             'Uwaga:'
@@ -165,6 +165,9 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
     },
     'david': {
         # Custom Software Headers – also kind of like a language, right?
-        'from_header': r'((?:^ *Original Message processed by david.+?$\n{,7})(?:.*\n){,3}(?:(?:^|\n)[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
+        'from_header': r'((?:^ *' + QUOTED_MATCH_INCLUDE + r'\[?Original Message processed by david.+?$\n{,4})'
+                       + r'(?:.*\n?){,2}'  # david's non-subject line + date wildcard identification
+                       + r'(?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE + ')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
     },
 }
