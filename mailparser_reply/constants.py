@@ -146,12 +146,12 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         'sent_from': 'Verzonden vanaf mijn',
     },
     'pl': {
-        'wrote_header': r'^(?!Dnia[.\s]*Dnia\s(.+?\s?.+?)\snadesłał:)('
+        'wrote_header': r'^(?!Dnia[.\s]*Dnia\s(.+?\s?.+?)\s(?:nadesłał|napisał\(a\)):)('
                         + QUOTED_MATCH_INCLUDE
-                        + r'Dnia\s(?:.+?\s?.+?)\s?nadesłał:)$',
+                        + r'Dnia\s(?:.+?\s?.+?)\s?(?:nadesłał|napisał\(a\)):)$',
         'from_header': r'((?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE
-                       + r')[* ]*(?:Od|Wysłano|Do|Temat|Data|DW):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+                       + r')[* ]*(?:Od|Wysłano|Do|Temat|Data|DW):[ *]*(?:\s{,2}).*){1,}(?:\n.*){,1})',
         'disclaimers': [
             'Uwaga:'
         ],
