@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from itertools import chain
 from typing import Union, List, Optional, Tuple
 
-from typing.re import Pattern
+from typing import Pattern
 
 from .constants import MAIL_LANGUAGES, MAIL_LANGUAGE_DEFAULT, OUTLOOK_MAIL_SEPARATOR, QUOTED_REMOVAL_REGEX, \
     SINGLE_SPACE_VARIATIONS, SENTENCE_START, OPTIONAL_LINEBREAK, DEFAULT_SIGNATURE_REGEX, QUOTED_MATCH_INCLUDE, \
