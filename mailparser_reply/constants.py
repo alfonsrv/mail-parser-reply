@@ -26,11 +26,11 @@ DEFAULT_SIGNATURE_REGEX = rf'\s*^{QUOTED_MATCH_INCLUDE}(?:[-_]{{2}}\n|- ?\w).*'
 
 #: All kinds of whitespaces incl special characters; used for Disclaimers, because they
 #: are usually either added in post by a mailserver or scrambled due to their higher complexity.
-SINGLE_SPACE_VARIATIONS = '[ \u200b\xA0\t]'
+SINGLE_SPACE_VARIATIONS = r'[ \u200b\xA0\t]'
 #: Linebreaks ok too
-OPTIONAL_LINEBREAK = f'[,()]?{SINGLE_SPACE_VARIATIONS}{{0,3}}[\n\r]?{SINGLE_SPACE_VARIATIONS}{{0,3}}[,()]?'
+OPTIONAL_LINEBREAK = rf'[,()]?{SINGLE_SPACE_VARIATIONS}{{0,3}}[\n\r]?{SINGLE_SPACE_VARIATIONS}{{0,3}}[,()]?'
 #: Possible ways to check for linebreaks
-SENTENCE_START = f'(?:[\n\r.!?]|^){SINGLE_SPACE_VARIATIONS}{{0,3}}'
+SENTENCE_START = rf'(?:[\n\r.!?]|^){SINGLE_SPACE_VARIATIONS}{{0,3}}'
 
 #: Matching regex for all languages
 MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
@@ -42,7 +42,7 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
                        + QUOTED_MATCH_INCLUDE
                        + r')[* ]*(?:Von|Gesendet|An|Betreff|Datum|Cc|Organisation):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
         'disclaimers': [
-            '(?:Wichtiger )?Hinweis:',
+            r'(?:Wichtiger )?Hinweis:',
             'Achtung:',
         ],
         'signatures': [
@@ -74,8 +74,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             'Warning:',
             'Confidential:',
             'CONFIDENTIALITY:',
-            '(?:Privileged|Confidential|Private|Sensitive|Important) (?:Notice|Note|Information):',
-            '[\* ]*Disclaimer[\* ]*',
+            r'(?:Privileged|Confidential|Private|Sensitive|Important) (?:Notice|Note|Information):',
+            r'[\* ]*Disclaimer[\* ]*',
         ],
         'signatures': [
             'Best regards',
@@ -168,6 +168,6 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         'from_header': r'((?:^ *' + QUOTED_MATCH_INCLUDE + r'\[?Original Message processed by david.+?$\n{,4})'
                        + r'(?:.*\n?){,2}'  # david's non-subject line + date wildcard identification
                        + r'(?:(?:^|\n|\n'
-                       + QUOTED_MATCH_INCLUDE + ')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
+                       + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
     },
 }
