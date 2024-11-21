@@ -163,11 +163,69 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         ],
         'sent_from': 'Wysłano z'
     },
-    'david': {
-        # Custom Software Headers – also kind of like a language, right?
-        'from_header': r'((?:^ *' + QUOTED_MATCH_INCLUDE + r'\[?Original Message processed by david.+?$\n{,4})'
-                       + r'(?:.*\n?){,2}'  # david's non-subject line + date wildcard identification
-                       + r'(?:(?:^|\n|\n'
-                       + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
+    'zh': {
+        'wrote_header': r'^(?!.*\d{4}年\d{1,2}月\d{1,2}日.*?写道：)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'\d{4}年\d{1,2}月\d{1,2}日.*?写道：)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:发件人|发送时间|收件人|主题|抄送|组织):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            '免责声明：',
+            '注意：',
+            '重要信息：',
+        ],
+        'signatures': [
+            '此致，',
+            '敬礼，',
+            '谢谢，',
+            '谢谢您的关注，',
+            '祝好，',
+        ],
+        'sent_from': r'从我的.*发送',
+    },
+    'ko': {
+        'wrote_header': r'^(?!.*\d{4}년 \d{1,2}월 \d{1,2}일.*?님이 작성하였습니다:)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'\d{4}년 \d{1,2}월 \d{1,2}일 .*님이 작성하였습니다:)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:보낸\s?사람|보낸\s?날짜|받는\s?사람|제목|참조):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            '주의:',
+            '면책 조항:',
+            '비밀정보:',
+        ],
+        'signatures': [
+            '감사합니다,',
+            '안부 전합니다,',
+            '좋은 하루 되세요,',
+            '고맙습니다,',
+            '감사합니다.',
+        ],
+        'sent_from': r'내 .*에서 보냄',
+    },
+    'es': {
+        'wrote_header': r'^(?!El\s.+\s escribió:)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'El\s.+\s escribió:)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:De|Enviado|Para|Asunto|Fecha|CC|Organización):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            'Aviso:',
+            'Confidencialidad:',
+            'Advertencia:',
+            'Descargo de responsabilidad:',
+        ],
+        'signatures': [
+            'Saludos,',
+            'Atentamente,',
+            'Gracias,',
+            'Un saludo,',
+            'Cordialmente,',
+            'Muchas gracias,',
+        ],
+        'sent_from': r'Enviado desde mi.*',
     },
 }
