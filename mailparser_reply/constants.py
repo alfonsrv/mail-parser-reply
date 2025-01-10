@@ -228,4 +228,25 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         ],
         'sent_from': r'Enviado desde mi.*',
     },
+    'cs': {
+        'wrote_header': r'^(?!Dne[.\s]*Dne\s(.+?\s?.+?)\snapsal\(a\):)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'Dne\s(?:.+?\s?.+?)\s?napsal\(a\):)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:Od|Odesláno|Komu|Předmět|Datum|Kopie):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            'Upozornění:',
+            'Důvěrné:',
+            'Varování:',
+        ],
+        'signatures': [
+            'S pozdravem,',
+            'S úctou,',
+            'Děkuji,',
+            'Děkujeme,',
+            'S přáním hezkého dne,',
+        ],
+        'sent_from': r'Odesláno z mého.*',
+    },
 }
