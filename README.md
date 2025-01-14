@@ -19,7 +19,11 @@ Currently supported languages are:
 * German (`de`) 🇩🇪
 * Italian (`it`) 🇮🇹
 * Japanese (`ja`) 🇯🇵
-* Polish (`pl`) 🇵🇱 
+* Polish (`pl`) 🇵🇱
+* Korean (`ko`) 🇰🇷
+* Chinese (`zh`) 🇨🇳
+* Spanish (`es`) 🇪🇸
+* Czech (`cs`) 🇨🇿
 
 
 🏳️‍🌈 **Adding more languages is quite easy!**
