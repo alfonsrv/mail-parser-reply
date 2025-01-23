@@ -74,7 +74,7 @@ class EmailMessage:
         return self.text
 
     def __repr__(self):
-        return f'<EmailMessage {self.languages=} {len(self.replies)} replies,>'
+        return f'<EmailMessage languages={self.languages} {len(self.replies)} replies,>'
 
     @property
     def latest_reply(self) -> Union[str, None]:
