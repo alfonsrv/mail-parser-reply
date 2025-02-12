@@ -170,4 +170,55 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
                        + r'(?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
     },
+    'no': {
+        'wrote_header': r'^(?!Den[.\s]*Den\s(.+?\s?.+?)\sskrev:)(' + QUOTED_MATCH_INCLUDE + r"Den\s(?:.+?\s?.+?)\s?skrev:)$",
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:Fra|Sendt|Til|Emne|Dato|Kopi):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            "Viktig melding:",
+            "Advarsel:",
+        ],
+        'signatures': [
+            'Med vennlig hilsen',
+            'Mvh',
+            'Beste hilsen',
+            'Vennlig hilsen',
+        ],
+        'sent_from': "Sendt fra min",
+    },
+    'sv': {
+        'wrote_header': r'^(?!Den[.\s]*Den\s(.+?\s?.+?)\sskrev:)(' + QUOTED_MATCH_INCLUDE + r"Den\s(?:.+?\s?.+?)\s?skrev:)$",
+        'from_header': r"((?:(?:^|\n|\n"
+                       + QUOTED_MATCH_INCLUDE
+        + r')[* ]*(?:Från|Skickat|Till|Ämne|Datum|Kopia):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            'Viktig information:',
+            'Varning:',
+        ],
+        'signatures': [
+            'Med vänlig hälsning',
+            'Mvh',
+            'Bästa hälsningar',
+            'Vänligen',
+        ],
+        'sent_from': 'Skickat från min',
+    },
+    'da': {
+        'wrote_header': r'^(?!Den[.\s]*Den\s(.+?\s?.+?)\sskrev:)(' + QUOTED_MATCH_INCLUDE + r"Den\s(?:.+?\s?.+?)\s?skrev:)$",
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+        + r')[* ]*(?:Fra|Sendt|Til|Emne|Dato|Kopi):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            "Vigtig meddelelse:",
+            "Advarsel:",
+        ],
+        'signatures': [
+            'Med venlig hilsen',
+            'Mvh',
+            'Bedste hilsner',
+            'Venlig hilsen',
+        ],
+        'sent_from': 'Sendt fra min',
+    },
 }
