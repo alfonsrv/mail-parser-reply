@@ -172,7 +172,7 @@ class EmailMessageTest(unittest.TestCase):
 
     def get_email(self, name: str, parse: bool = True, languages: list = None):
         """ Return EmailMessage instance or text content """
-        with open(f'test/emails/{name}.txt') as f:
+        with open(f'test/emails/{name}.txt', encoding='utf-8') as f:
             text = f.read()
         return EmailReplyParser(
             languages=languages or [MAIL_LANGUAGE_DEFAULT]
