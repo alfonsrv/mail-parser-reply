@@ -179,17 +179,18 @@ class EmailMessageTest(unittest.TestCase):
 
     def test_swedish_quoted_reply(self):
         mail = self.get_email('email_swedish_1', parse=True, languages=['sv'])
+        print(mail.replies)
         self.assertEqual(2, len(mail.replies))
-        self.assertTrue("That's sounds great! Have a nice evening!" in mail.replies[0].body)
-        self.assertTrue("Från: John Smith <john.smith@example.com>" in mail.replies[1].headers)
-        self.assertTrue("Hej John," in mail.replies[1].body)
-        self.assertTrue("Best regards," in mail.replies[1].body or "Anna Andersson" in mail.replies[1].body)
+        self.assertIn("Ursäkta mitt sena svar!", mail.replies[0].body)
+        self.assertIn("Hej Person B,", mail.replies[1].body)
+        self.assertIn("Med Vänlig Hälsning,", mail.replies[1].body)
 
     def test_swedish_realistic_anonymized(self):
         mail = self.get_email('email_sv_anon_1', parse=True, languages=['sv'])
-        self.assertEqual(2, len(mail.replies))
+        self.assertEqual(3, len(mail.replies))
         self.assertIn("Berättar gärna.", mail.replies[0].body)
-        self.assertIn("Hej Person A,", mail.replies[1].body)
+        self.assertIn("Kan inte se att det står något", mail.replies[1].body)
+        self.assertIn("Jag har försökt få tag", mail.replies[2].body)
 
     def get_email(self, name: str, parse: bool = True, languages: list = None):
         """ Return EmailMessage instance or text content """

@@ -171,12 +171,9 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
                        + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
     },
     'sv': {
-        # Match 'Den ... skrev:' even if split across lines
-        # 'wrote_header': r'^(?:' + QUOTED_MATCH_INCLUDE + r'(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön)[^\n]*skrev:\s*)$',
-        # 'wrote_header': r'^(?:(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön)[^\n]*skrev:\s*)(?:.+?\s?.+?)):$',
         'wrote_header': r"^(?!Den[.\s]*Den\s(.+?\s?.+?)\skrev:)(" 
                         + QUOTED_MATCH_INCLUDE 
-                        + r"(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön)[^\n]*skrev\s(?:.+?\s?.+?):)$",
+                        + r"(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön|(?:[0-9]+\s+(?:jan|feb|mar|apr|maj|jun|jul|aug|sep|okt|nov|dec)))[^\n]*skrev\s(?:.+?\s?.+?):)$",
         'disclaimers': [
             'Varning:',
             'Observera:',
