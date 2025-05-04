@@ -170,6 +170,27 @@ class EmailMessageTest(unittest.TestCase):
         mail = self.get_email('begins_with_signature', parse=True, languages=['en'])
         self.assertTrue(mail.replies[0].signatures. startswith("Regards,"))
 
+    def test_swedish_simple_body(self):
+        mail = self.get_email('email_swedish_2', parse=True, languages=['sv'])
+        self.assertEqual(1, len(mail.replies))
+        self.assertTrue("Hello Anna," in mail.replies[0].body)
+        self.assertTrue("/John" in mail.replies[0].signatures)
+        self.assertTrue("/John" not in mail.replies[0].body)
+
+    def test_swedish_quoted_reply(self):
+        mail = self.get_email('email_swedish_1', parse=True, languages=['sv'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertTrue("That's sounds great! Have a nice evening!" in mail.replies[0].body)
+        self.assertTrue("Från: John Smith <john.smith@example.com>" in mail.replies[1].headers)
+        self.assertTrue("Hej John," in mail.replies[1].body)
+        self.assertTrue("Best regards," in mail.replies[1].body or "Anna Andersson" in mail.replies[1].body)
+
+    def test_swedish_realistic_anonymized(self):
+        mail = self.get_email('email_sv_anon_1', parse=True, languages=['sv'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("Berättar gärna.", mail.replies[0].body)
+        self.assertIn("Hej Person A,", mail.replies[1].body)
+
     def get_email(self, name: str, parse: bool = True, languages: list = None):
         """ Return EmailMessage instance or text content """
         with open(f'test/emails/{name}.txt', encoding='utf-8') as f:

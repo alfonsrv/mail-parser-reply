@@ -170,4 +170,28 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
                        + r'(?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
     },
+    'sv': {
+        # Match 'Den ... skrev:' even if split across lines
+        # 'wrote_header': r'^(?:' + QUOTED_MATCH_INCLUDE + r'(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön)[^\n]*skrev:\s*)$',
+        # 'wrote_header': r'^(?:(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön)[^\n]*skrev:\s*)(?:.+?\s?.+?)):$',
+        'wrote_header': r"^(?!Den[.\s]*Den\s(.+?\s?.+?)\skrev:)(" 
+                        + QUOTED_MATCH_INCLUDE 
+                        + r"(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön)[^\n]*skrev\s(?:.+?\s?.+?):)$",
+        'disclaimers': [
+            'Varning:',
+            'Observera:',
+        ],
+        'signatures': [
+            'Med vänliga hälsningar',
+            'Vänliga hälsningar',
+            'Hälsningar',
+            'Bästa hälsningar',
+            'Mvh',
+            r'/\w+',  # To match /John, /Anna, etc.
+        ],
+        'sent_from': 'Skickat från min',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:Från|Skickat|Till|Ämne|Datum|Kopia):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+    },
 }
