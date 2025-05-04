@@ -20,6 +20,7 @@ Currently supported languages are:
 * Italian (`it`) 🇮🇹
 * Japanese (`ja`) 🇯🇵
 * Polish (`pl`) 🇵🇱 
+* Swedish (`sv`) 🇸🇪
 
 
 🏳️‍🌈 **Adding more languages is quite easy!**

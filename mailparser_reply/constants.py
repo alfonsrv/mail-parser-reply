@@ -170,4 +170,25 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
                        + r'(?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
     },
+    'sv': {
+        'wrote_header': r"^(?!Den[.\s]*Den\s(.+?\s?.+?)\skrev:)(" 
+                        + QUOTED_MATCH_INCLUDE 
+                        + r"(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön|(?:[0-9]+\s+(?:jan|feb|mar|apr|maj|jun|jul|aug|sep|okt|nov|dec)))[^\n]*skrev\s(?:.+?\s?.+?):)$",
+        'disclaimers': [
+            'Varning:',
+            'Observera:',
+        ],
+        'signatures': [
+            'Med vänliga hälsningar',
+            'Vänliga hälsningar',
+            'Hälsningar',
+            'Bästa hälsningar',
+            'Mvh',
+            r'/\w+',  # To match /John, /Anna, etc.
+        ],
+        'sent_from': 'Skickat från min',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:Från|Skickat|Till|Ämne|Datum|Kopia):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+    },
 }
