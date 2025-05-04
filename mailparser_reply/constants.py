@@ -34,24 +34,6 @@ SENTENCE_START = rf'(?:[\n\r.!?]|^){SINGLE_SPACE_VARIATIONS}{{0,3}}'
 
 #: Matching regex for all languages
 MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
-    'de': {
-        'wrote_header': r'^(?!Am.*Am\s.+?schrieb.*:)('
-                        + QUOTED_MATCH_INCLUDE
-                        + r'Am\s(?:.+?\s?)schrieb\s(?:.+?\s?.+?):)$',
-        'from_header': r'((?:(?:^|\n|\n'
-                       + QUOTED_MATCH_INCLUDE
-                       + r')[* ]*(?:Von|Gesendet|An|Betreff|Datum|Cc|Organisation):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
-        'disclaimers': [
-            r'(?:Wichtiger )?Hinweis:',
-            'Achtung:',
-        ],
-        'signatures': [
-            r'Mit freundlichen Gr\u00fc\u00DFen',
-            r'Mit freundlichen Gr\u00fc\u00DFen / (?:Best|Kind) regards,',
-            r'(?:(?:Beste(?:n)?|Liebe|Viele) )?(?:Gr(?:\u00fc|ue)(?:\u00DF|ss)(?:e)?|Gru\u00DF|Gruss)',
-        ],
-        'sent_from': 'Gesendet von',
-    },
     'en': {
         # Apple Mail-style header
         # ^(?!On[.\s]*On\s(.+?\s?.+?)\swrote:) – Negative lookahead, see:
@@ -87,6 +69,68 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             'regards,',
         ],
         'sent_from': 'Sent from my|Get Outlook for',
+    },
+    'de': {
+        'wrote_header': r'^(?!Am.*Am\s.+?schrieb.*:)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'Am\s(?:.+?\s?)schrieb\s(?:.+?\s?.+?):)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:Von|Gesendet|An|Betreff|Datum|Cc|Organisation):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            r'(?:Wichtiger )?Hinweis:',
+            'Achtung:',
+        ],
+        'signatures': [
+            r'Mit freundlichen Gr\u00fc\u00DFen',
+            r'Mit freundlichen Gr\u00fc\u00DFen / (?:Best|Kind) regards,',
+            r'(?:(?:Beste(?:n)?|Liebe|Viele) )?(?:Gr(?:\u00fc|ue)(?:\u00DF|ss)(?:e)?|Gru\u00DF|Gruss)',
+        ],
+        'sent_from': 'Gesendet von',
+    },
+    'cs': {
+        'wrote_header': r'^(?!Dne[.\s]*Dne\s(.+?\s?.+?)\snapsal\(a\):)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'Dne\s(?:.+?\s?.+?)\s?napsal\(a\):)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:Od|Odesláno|Komu|Předmět|Datum|Kopie):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            'Upozornění:',
+            'Důvěrné:',
+            'Varování:',
+        ],
+        'signatures': [
+            'S pozdravem,',
+            'S úctou,',
+            'Děkuji,',
+            'Děkujeme,',
+            'S přáním hezkého dne,',
+        ],
+        'sent_from': r'Odesláno z mého.*',
+    },
+    'es': {
+        'wrote_header': r'^(?!El\s.+\s escribió:)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'El\s.+\s escribió:)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:De|Enviado|Para|Asunto|Fecha|CC|Organización):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            'Aviso:',
+            'Confidencialidad:',
+            'Advertencia:',
+            'Descargo de responsabilidad:',
+        ],
+        'signatures': [
+            'Saludos,',
+            'Atentamente,',
+            'Gracias,',
+            'Un saludo,',
+            'Cordialmente,',
+            'Muchas gracias,',
+        ],
+        'sent_from': r'Enviado desde mi.*',
     },
     'fr': {
         'wrote_header': r'(?!Le.*Le\s.+?a \u00e9crit[a-zA-Z0-9.:;<>()&@ -]*:)('
@@ -126,6 +170,27 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         'signatures': [],
         'sent_from': '',
     },
+    'ko': {
+        'wrote_header': r'^(?!.*\d{4}년 \d{1,2}월 \d{1,2}일.*?님이 작성하였습니다:)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'\d{4}년 \d{1,2}월 \d{1,2}일 .*님이 작성하였습니다:)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:보낸\s?사람|보낸\s?날짜|받는\s?사람|제목|참조):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            '주의:',
+            '면책 조항:',
+            '비밀정보:',
+        ],
+        'signatures': [
+            '감사합니다,',
+            '안부 전합니다,',
+            '좋은 하루 되세요,',
+            '고맙습니다,',
+            '감사합니다.',
+        ],
+        'sent_from': r'내 .*에서 보냄',
+    },
     'nl': {
         'wrote_header': r'^(?!Op[.\s]*Op\s(.+?\s?.+?)\sschreef:)('
                         + QUOTED_MATCH_INCLUDE
@@ -163,16 +228,9 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         ],
         'sent_from': 'Wysłano z'
     },
-    'david': {
-        # Custom Software Headers – also kind of like a language, right?
-        'from_header': r'((?:^ *' + QUOTED_MATCH_INCLUDE + r'\[?Original Message processed by david.+?$\n{,4})'
-                       + r'(?:.*\n?){,2}'  # david's non-subject line + date wildcard identification
-                       + r'(?:(?:^|\n|\n'
-                       + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
-    },
     'sv': {
-        'wrote_header': r"^(?!Den[.\s]*Den\s(.+?\s?.+?)\skrev:)(" 
-                        + QUOTED_MATCH_INCLUDE 
+        'wrote_header': r"^(?!Den[.\s]*Den\s(.+?\s?.+?)\skrev:)("
+                        + QUOTED_MATCH_INCLUDE
                         + r"(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön|(?:[0-9]+\s+(?:jan|feb|mar|apr|maj|jun|jul|aug|sep|okt|nov|dec)))[^\n]*skrev\s(?:.+?\s?.+?):)$",
         'disclaimers': [
             'Varning:',
@@ -190,5 +248,33 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         'from_header': r'((?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE
                        + r')[* ]*(?:Från|Skickat|Till|Ämne|Datum|Kopia):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+    },
+    'zh': {
+        'wrote_header': r'^(?!.*\d{4}年\d{1,2}月\d{1,2}日.*?写道：)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'\d{4}年\d{1,2}月\d{1,2}日.*?写道：)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:发件人|发送时间|收件人|主题|抄送|组织):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            '免责声明：',
+            '注意：',
+            '重要信息：',
+        ],
+        'signatures': [
+            '此致，',
+            '敬礼，',
+            '谢谢，',
+            '谢谢您的关注，',
+            '祝好，',
+        ],
+        'sent_from': r'从我的.*发送',
+    },
+    'david': {
+        # Custom Software Headers – also kind of like a language, right?
+        'from_header': r'((?:^ *' + QUOTED_MATCH_INCLUDE + r'\[?Original Message processed by david.+?$\n{,4})'
+                       + r'(?:.*\n?){,2}'  # david's non-subject line + date wildcard identification
+                       + r'(?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE + r')[* ]*(?:Von|An|Cc)(?:\s{,2}).*){2,})'
     },
 }

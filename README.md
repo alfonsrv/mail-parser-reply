@@ -21,6 +21,10 @@ Currently supported languages are:
 * Japanese (`ja`) 🇯🇵
 * Polish (`pl`) 🇵🇱 
 * Swedish (`sv`) 🇸🇪
+* Czech (`cs`) 🇨🇿 (untested - contributions welcome!)
+* Spanish (`es`) 🇪🇸 (untested - contributions welcome!)
+* Korean (`ko`) 🇰🇷 (untested - contributions welcome!)
+* Chinese (`zh`) 🇨🇳 (untested - contributions welcome!)
 
 
 🏳️‍🌈 **Adding more languages is quite easy!**
