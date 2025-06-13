@@ -10,7 +10,7 @@ from typing import Pattern
 
 from .constants import MAIL_LANGUAGES, MAIL_LANGUAGE_DEFAULT, OUTLOOK_MAIL_SEPARATOR, QUOTED_REMOVAL_REGEX, \
     SINGLE_SPACE_VARIATIONS, SENTENCE_START, OPTIONAL_LINEBREAK, DEFAULT_SIGNATURE_REGEX, QUOTED_MATCH_INCLUDE, \
-    GENERIC_MAIL_SEPARATOR
+    GENERIC_MAIL_SEPARATOR, NOLIST_SIGNATURE_REGEX
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +54,9 @@ class EmailMessage:
 
     #: Whether to automatically include English versions too; desirable in multi-language environments
     include_english: bool = True
+
+    #: Don't capture hyphen marked lists as signatures
+    keep_hyphen_lists: bool = False
 
     #: Whether to remove quotes on standalone replies (aka replies, that do not *include* quoted content,
     #: but are completely quoted by themselves)
@@ -133,6 +136,8 @@ class EmailMessage:
         signatures = [self._get_language_regex(language=language, regex_key='signatures') for language in self.languages]
         signatures = '|'.join([header for header in signatures if header])
 
+        signature_regex = NOLIST_SIGNATURE_REGEX if self.keep_hyphen_lists else DEFAULT_SIGNATURE_REGEX
+
         # Matches the following signatures – when a signature is matched it's considered to move all the way
         # until the end of the mail body. Might be dangerous; but honestly how github/email_reply_parser works too
         #   1) Outlook-style signatures
@@ -141,7 +146,7 @@ class EmailMessage:
         #   4) Regular signature-indicating stuff; e.g. "Best regards, ..."
         # TODO: Add quotation as optional matching
         self._signature_regex = re.compile(
-            fr'(({DEFAULT_SIGNATURE_REGEX}|{OUTLOOK_MAIL_SEPARATOR}|' +   # 1)
+            fr'(({signature_regex}|{OUTLOOK_MAIL_SEPARATOR}|' +   # 1)
             fr'\s*^{QUOTED_MATCH_INCLUDE}(?:{sent_from_regex}) ?(?:(?:[\w.<>:// ]+)|(?:\w+ ){1,3})$|'+  # 2) + 3)
             fr'(?<!\A)^{QUOTED_MATCH_INCLUDE}(?:{signatures}))(.|\s)*)',  # 4)
             flags=re.MULTILINE | re.IGNORECASE
