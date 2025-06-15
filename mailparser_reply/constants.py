@@ -24,6 +24,11 @@ GENERIC_MAIL_SEPARATOR = r'^-{5,} ?Original Message ?-{5,}$'
 #   2) -John Doe
 DEFAULT_SIGNATURE_REGEX = rf'\s*^{QUOTED_MATCH_INCLUDE}(?:[-_]{{2}}\n|- ?\w).*'
 
+#: Same as above except it won't capture hyphen marked lists like
+# - one
+# - two
+NOLIST_SIGNATURE_REGEX = rf'\s*^{QUOTED_MATCH_INCLUDE}(?:[-_]{{2}}\n).*'
+
 #: All kinds of whitespaces incl special characters; used for Disclaimers, because they
 #: are usually either added in post by a mailserver or scrambled due to their higher complexity.
 SINGLE_SPACE_VARIATIONS = r'[ \u200b\xA0\t]'

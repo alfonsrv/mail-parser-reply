@@ -1,17 +1,17 @@
-# Mail Reply Parser 📧🐍 
+# Mail Reply Parser 📧🐍
 
-[![Python](https://img.shields.io/badge/Made%20with-Python%203.x-blue.svg?style=flat-square&logo=Python&logoColor=white)](https://www.python.org/) 
+[![Python](https://img.shields.io/badge/Made%20with-Python%203.x-blue.svg?style=flat-square&logo=Python&logoColor=white)](https://www.python.org/)
 [![Version](https://img.shields.io/badge/Version-1.3-dc2f02.svg?style=flat-square&logoColor=white)](https://github.com/alfonsrv/mail-parser-reply)
 
 
 ### Multi-language email reply parsing for international environments 🌍
 
-Mail clients handle reply formatting differently, making reliable parsing difficult. Thank god we have 
-[standards](https://xkcd.com/927/).  This library splits *text-based* emails into separate replies based on common 
+Mail clients handle reply formatting differently, making reliable parsing difficult. Thank god we have
+[standards](https://xkcd.com/927/).  This library splits *text-based* emails into separate replies based on common
 headers produced by different, multilingual clients usually indicating separation.
 
-Replies can either present the whole mail message body, or strip headers, signatures and common disclaimers if required. 
-Currently supported languages are: 
+Replies can either present the whole mail message body, or strip headers, signatures and common disclaimers if required.
+Currently supported languages are:
 
 * Dutch (`nl`) 🇳🇱
 * English (`en`) 🇬🇧
@@ -19,7 +19,7 @@ Currently supported languages are:
 * German (`de`) 🇩🇪
 * Italian (`it`) 🇮🇹
 * Japanese (`ja`) 🇯🇵
-* Polish (`pl`) 🇵🇱 
+* Polish (`pl`) 🇵🇱
 * Swedish (`sv`) 🇸🇪
 * Czech (`cs`) 🇨🇿 (untested - contributions welcome!)
 * Spanish (`es`) 🇪🇸 (untested - contributions welcome!)
@@ -29,19 +29,19 @@ Currently supported languages are:
 
 🏳️‍🌈 **Adding more languages is quite easy!**
 
-This is an improved Python implementation of GitHub's Ruby-based [email_reply_parser](https://github.com/github/email_reply_parser/) 
-and an adaptation of Zapier's [email-reply-parser](https://github.com/zapier/email-reply-parser) which both split the 
+This is an improved Python implementation of GitHub's Ruby-based [email_reply_parser](https://github.com/github/email_reply_parser/)
+and an adaptation of Zapier's [email-reply-parser](https://github.com/zapier/email-reply-parser) which both split the
 mails in fragments instead of distinct replies. They also only support English.
 
 
 ## ⭐ Features
 
-⭐ Easy to implement  
-⭐ Multilanguage Support  
-⭐ Text-based mail parsing  
-⭐ Detect headers, signatures and disclaimers  
-⭐ Fully type annotated  
-⭐ Easy-to-read code and well-tested  
+⭐ Easy to implement
+⭐ Multilanguage Support
+⭐ Text-based mail parsing
+⭐ Detect headers, signatures and disclaimers
+⭐ Fully type annotated
+⭐ Easy-to-read code and well-tested
 
 
 ## Overview 🔭
@@ -102,7 +102,8 @@ EmailMessage.text:              Mail body
 EmailMessage.languages:         Languages to use for parsing headers
 EmailMessage.replies:           List of EmailReply; single parsed replies
 EmailMessage.include_english:   Always include English language for parsing
-EmailMessage.default_language:  Default language to use if language dictionary 
+EmailMessage.keep_hyphen_lists: Don't capture hyphen marked lists as signatures
+EmailMessage.default_language:  Default language to use if language dictionary
                                 doesn't include any other language codes
 
 EmailMessage.HEADER_REGEX:      RegEx for identifying headers, separating mails
@@ -127,4 +128,4 @@ EmailReply.disclaimers:          Identified disclaimers
 
 ---
 
-[![Buy me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/alfonsrv)  
+[![Buy me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/alfonsrv)

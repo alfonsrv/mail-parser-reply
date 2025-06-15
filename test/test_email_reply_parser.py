@@ -6,7 +6,7 @@ import logging
 base_path = os.path.realpath(os.path.dirname(__file__))
 root = os.path.join(base_path, '..')
 sys.path.append(root)
-from mailparser_reply import EmailReplyParser
+from mailparser_reply import EmailReplyParser, EmailMessage
 from mailparser_reply.constants import MAIL_LANGUAGE_DEFAULT
 
 
@@ -31,6 +31,26 @@ class EmailMessageTest(unittest.TestCase):
         self.assertTrue(">> -Abhishek Kona" in mail.replies[2].content)
         self.assertTrue(">> -Abhishek Kona" in mail.replies[2].signatures)
         self.assertTrue(">> -Abhishek Kona" not in mail.replies[2].body)
+
+    def test_hyphen_signature(self):
+        mail = self.get_email('email_1_1', parse=True, languages=['en'])
+
+        # interpret hyphen as signature
+        self.assertEqual(1, len(mail.replies))
+        self.assertTrue("-Abhishek Kona" in mail.replies[0].signatures)
+
+    def test_keep_hyphen_lists(self):
+        text = self.get_email('email_1_1', parse=False)
+        mail = EmailMessage(
+            text=text,
+            languages=[MAIL_LANGUAGE_DEFAULT],
+            keep_hyphen_lists=True
+        )
+        mail.read()
+
+        # interpret hyphen as body
+        self.assertEqual(1, len(mail.replies))
+        self.assertTrue("-Abhishek Kona" not in mail.replies[0].signatures)
 
     def test_simple_scrambled_body(self):
         mail = self.get_email('email_1_4', parse=True, languages=['en'])
