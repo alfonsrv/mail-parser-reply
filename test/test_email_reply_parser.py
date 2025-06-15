@@ -199,7 +199,6 @@ class EmailMessageTest(unittest.TestCase):
 
     def test_swedish_quoted_reply(self):
         mail = self.get_email('email_swedish_1', parse=True, languages=['sv'])
-        print(mail.replies)
         self.assertEqual(2, len(mail.replies))
         self.assertIn("Ursäkta mitt sena svar!", mail.replies[0].body)
         self.assertIn("Hej Person B,", mail.replies[1].body)

@@ -36,12 +36,12 @@ mails in fragments instead of distinct replies. They also only support English.
 
 ## ⭐ Features
 
-⭐ Easy to implement
-⭐ Multilanguage Support
-⭐ Text-based mail parsing
-⭐ Detect headers, signatures and disclaimers
-⭐ Fully type annotated
-⭐ Easy-to-read code and well-tested
+⭐ Easy to implement  
+⭐ Multilanguage Support  
+⭐ Text-based mail parsing  
+⭐ Detect headers, signatures and disclaimers  
+⭐ Fully type annotated  
+⭐ Easy-to-read code and well-tested  
 
 
 ## Overview 🔭
