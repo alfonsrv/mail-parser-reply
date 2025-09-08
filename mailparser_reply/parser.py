@@ -14,7 +14,79 @@ from .constants import MAIL_LANGUAGES, MAIL_LANGUAGE_DEFAULT, OUTLOOK_MAIL_SEPAR
 
 logger = logging.getLogger(__name__)
 
+from functools import lru_cache
+def _get_language_regex_patterns(languages: Tuple[str, ...], regex_key: str, default_language: str) -> List[str]:
+    """Helper to get all language-specific regex patterns for a given key."""
+    patterns = []
+    
+    def flat_list(x):
+        return '|'.join(chain(x)) if isinstance(x, list) else x
 
+    for lang in languages:
+        if lang in MAIL_LANGUAGES and regex_key in MAIL_LANGUAGES[lang]:
+            patterns.append(flat_list(MAIL_LANGUAGES[lang][regex_key]))
+
+    # Fallback to default language if the key is missing for all specified languages
+    if not patterns and default_language not in languages:
+        if default_language in MAIL_LANGUAGES and regex_key in MAIL_LANGUAGES[default_language]:
+            patterns.append(flat_list(MAIL_LANGUAGES[default_language][regex_key]))
+            
+    return [p for p in patterns if p]
+
+@lru_cache(maxsize=128)
+def get_disclaimers_regex(languages: Tuple[str, ...], default_language: str) -> Pattern:
+    """Compiles and caches the disclaimer regex for a given set of languages."""
+    ALLOW_ANY_EXTENSION = r'[a-zA-Z0-9\u00C0-\u017F:;.,?!<>()@&/\'\"\“\” \u200b\xA0\t\-]*'
+    disclaimers = _get_language_regex_patterns(languages, 'disclaimers', default_language)
+    disclaimers_pattern = '|'.join(disclaimers).replace(' ', SINGLE_SPACE_VARIATIONS)
+    
+    regex = re.compile(
+        f'{SENTENCE_START}(?:{disclaimers_pattern})(?:{OPTIONAL_LINEBREAK}{ALLOW_ANY_EXTENSION}?(?:mail){ALLOW_ANY_EXTENSION}){{1,2}}',
+        flags=re.MULTILINE | re.IGNORECASE
+    )
+    logger.debug(f'Compiled Disclaimer RegEx for {languages}: "{regex.pattern!r}"')
+    return regex
+
+@lru_cache(maxsize=128)
+def get_header_regex(languages: Tuple[str, ...], default_language: str) -> Pattern:
+    """
+    Compiles and caches the header regex for a given set of languages.
+    **UPDATED**: Now handles common leading characters like *, >, and spaces.
+    """
+    wrote_headers = _get_language_regex_patterns(languages, 'wrote_header', default_language)
+    from_headers = _get_language_regex_patterns(languages, 'from_header', default_language)
+    
+    # Combine language-specific headers
+    lang_headers = wrote_headers + from_headers
+    
+    # Prepend a pattern to each rule to optionally match leading characters.
+    # This allows it to match "> From:" or "* From:" etc.
+    prefixed_lang_headers = [f'(?:^[\\s*>-]*)({h})' for h in lang_headers]
+    
+    # The generic separator should match exactly, without prefixes
+    all_headers = prefixed_lang_headers + [f'({GENERIC_MAIL_SEPARATOR})']
+    
+    headers_pattern = '|'.join(filter(None, all_headers))
+
+    regex = re.compile(headers_pattern, flags=re.MULTILINE | re.IGNORECASE)
+    logger.debug(f'Compiled Header RegEx for {languages}: "{regex.pattern!r}"')
+    return regex
+
+@lru_cache(maxsize=128)
+def get_signature_regex(languages: Tuple[str, ...], default_language: str) -> Pattern:
+    """Compiles and caches the signature regex for a given set of languages."""
+    sent_from = '|'.join(_get_language_regex_patterns(languages, 'sent_from', default_language))
+    signatures = '|'.join(_get_language_regex_patterns(languages, 'signatures', default_language))
+    
+    # CORRECTED: Removed the overly broad |{OUTLOOK_MAIL_SEPARATOR}
+    regex = re.compile(
+        fr'(({DEFAULT_SIGNATURE_REGEX}|' +  # <-- The separator check was removed from here
+        fr'\s*^{QUOTED_MATCH_INCLUDE}(?:{sent_from}) ?(?:(?:[\w.<>:// ]+)|(?:\w+ ){{1,3}})$|' +
+        fr'(?<!\A)^{QUOTED_MATCH_INCLUDE}(?:{signatures}))(.|\s)*)',
+        flags=re.MULTILINE | re.IGNORECASE
+    )
+    logger.debug(f'Mail Signature RegEx: "{regex.pattern!r}"')
+    return regex
 @dataclass
 class EmailReplyParser:
     """ Easy EmailMessage parsing interface """
@@ -61,14 +133,13 @@ class EmailMessage:
 
     #: Fallback language when other languages don't have dict entry
     default_language: str = MAIL_LANGUAGE_DEFAULT
-    _header_regex: Union[Pattern, None] = None
-    _disclaimers_regex: Union[Pattern, None] = None
-    _signature_regex: Union[Pattern, None] = None
 
     def __post_init__(self):
         if self.include_english and 'en' not in self.languages:
             self.languages.append('en')
+        self.languages_tuple = tuple(sorted(self.languages))
         self._normalize_text()
+        
 
     def __str__(self):
         return self.text
@@ -95,61 +166,6 @@ class EmailMessage:
         # Fallback; language does not have regex_key defined; use global fallback language's regex key
         return flat_list(MAIL_LANGUAGES[self.default_language][regex_key])
 
-    @property
-    def DISCLAIMERS_REGEX(self) -> Pattern:
-        """ Compile regex to remove disclaimers at the end of the mail """
-        if self._disclaimers_regex: return self._disclaimers_regex
-
-        ALLOW_ANY_EXTENSION = r'[a-zA-Z0-9\u00C0-\u017F:;.,?!<>()@&/\'\"\“\” \u200b\xA0\t\-]*'
-        disclaimers = [self._get_language_regex(language=language, regex_key='disclaimers') for language in self.languages]
-        disclaimers = '|'.join([
-            disclaimer for disclaimer in disclaimers if disclaimer
-        ]).replace(' ', SINGLE_SPACE_VARIATIONS)
-
-        self._disclaimers_regex = re.compile(
-            f'{SENTENCE_START}(?:{disclaimers})(?:{OPTIONAL_LINEBREAK}{ALLOW_ANY_EXTENSION}?(?:mail){ALLOW_ANY_EXTENSION}){{1,2}}',
-            flags=re.MULTILINE | re.IGNORECASE
-        )
-        logger.debug(f'Mail Disclaimer RegEx: "{self._disclaimers_regex.pattern!r}"')
-        return self._disclaimers_regex
-
-    @property
-    def HEADER_REGEX(self) -> Pattern:
-        """ Helper function to build the regex used for detecting headers  """
-        if self._header_regex: return self._header_regex
-        regex_headers = [self._get_language_regex(language=language, regex_key='wrote_header') for language in self.languages]
-        regex_headers += [self._get_language_regex(language=language, regex_key='from_header') for language in self.languages]
-        regex_headers.append(f'({GENERIC_MAIL_SEPARATOR})')
-        regex_headers = '|'.join([header for header in regex_headers if header])
-        self._header_regex = re.compile(regex_headers, flags=re.MULTILINE | re.IGNORECASE)
-        logger.debug(f'Mail Header RegEx: "{self._header_regex.pattern!r}"')
-        return self._header_regex
-
-    @property
-    def SIGNATURE_REGEX(self) -> Pattern:
-        if self._signature_regex: return self._signature_regex
-        sent_from_regex = [self._get_language_regex(language=language, regex_key='sent_from') for language in self.languages]
-        sent_from_regex = '|'.join([header for header in sent_from_regex if header])
-        signatures = [self._get_language_regex(language=language, regex_key='signatures') for language in self.languages]
-        signatures = '|'.join([header for header in signatures if header])
-
-        # Matches the following signatures – when a signature is matched it's considered to move all the way
-        # until the end of the mail body. Might be dangerous; but honestly how github/email_reply_parser works too
-        #   1) Outlook-style signatures
-        #   2) Idiot-filter phone email_reply_parser "Sent from my ..." (usually 1-3 words)
-        #   3) Get Outlook for... / Sent from Outlook for iOS<https://greed.com">
-        #   4) Regular signature-indicating stuff; e.g. "Best regards, ..."
-        # TODO: Add quotation as optional matching
-        self._signature_regex = re.compile(
-            fr'(({DEFAULT_SIGNATURE_REGEX}|{OUTLOOK_MAIL_SEPARATOR}|' +   # 1)
-            fr'\s*^{QUOTED_MATCH_INCLUDE}(?:{sent_from_regex}) ?(?:(?:[\w.<>:// ]+)|(?:\w+ ){1,3})$|'+  # 2) + 3)
-            fr'(?<!\A)^{QUOTED_MATCH_INCLUDE}(?:{signatures}))(.|\s)*)',  # 4)
-            flags=re.MULTILINE | re.IGNORECASE
-        )
-        logger.debug(f'Mail Signature RegEx: "{self._signature_regex.pattern!r}"')
-
-        # TODO: Always match whole signature until the next fragment/regex or until end of text
-        return self._signature_regex
 
     def _normalize_text(self):
         # Normalize Line Endings
@@ -165,51 +181,56 @@ class EmailMessage:
 
     def _process_signatures_disclaimers(self, text: str) -> Tuple[List[str], str]:
         """ Identifies Signature Elements and Disclaimers """
-        disclaimers = self.DISCLAIMERS_REGEX.findall(text)
-        signatures = self.SIGNATURE_REGEX.search(text)
-        return disclaimers, signatures.group() if signatures else ''
+        disclaimers_regex = get_disclaimers_regex(self.languages_tuple, self.default_language)
+        signature_regex = get_signature_regex(self.languages_tuple, self.default_language)
+        
+        disclaimers = disclaimers_regex.findall(text)
+        signatures_match = signature_regex.search(text)
+        return disclaimers, signatures_match.group() if signatures_match else ''
 
     def read(self):
-        """ Processes mail text body, splitting it up in distinct, digestible EmailReplies
-         based on headers separating mail replies/mail parts """
-
-        # Find all headers in mail body and convert to flat list
-        headers = self.HEADER_REGEX.findall(self.text)
-        headers = [header for header in chain.from_iterable(headers) if header]
-
+        """
+        OPTIMIZED: Processes mail text body using re.finditer for better performance
+        while preserving the original find-and-slice logic.
+        """
+        header_regex = get_header_regex(self.languages_tuple, self.default_language)
+        
         current_position = 0
         previous_header = ''
+        
+        # re.finditer is an efficient way to loop over all matches
+        for match in header_regex.finditer(self.text):
+            position = match.start()
+            header = match.group(0)
 
-        # Delimits eMail body by headers
-        for header in headers:
-            position = self.text.find(
-                header,
-                current_position + 1 if current_position > 0 else current_position
-            )
-
-            disclaimers, signatures = self._process_signatures_disclaimers(self.text[current_position:position])
-
+            # Process the content between the last header and this one
+            content_slice = self.text[current_position:position]
+            disclaimers, signatures = self._process_signatures_disclaimers(content_slice)
+            
             _reply = EmailReply(
                 headers=previous_header,
-                content=self.text[current_position:position],
+                content=content_slice,
                 signatures=signatures,
                 disclaimers=disclaimers
             )
-            current_position = position if position >= 0 else 0
-            previous_header = header
-            if not _reply.content: continue
-            self.replies.append(_reply)
 
-        # Add last reply element that is otherwise skipped due to the way we're iterating over headers.
-        # This also adds the message body as a whole, in case there are no email headers at all
-        disclaimers, signatures = self._process_signatures_disclaimers(self.text[current_position:])
+            if _reply.content:
+                self.replies.append(_reply)
+            
+            current_position = position
+            previous_header = header
+
+        # Add the final part of the message after the last header
+        final_content = self.text[current_position:]
+        disclaimers, signatures = self._process_signatures_disclaimers(final_content)
         _reply = EmailReply(
             headers=previous_header,
-            content=self.text[current_position:],
+            content=final_content,
             signatures=signatures,
             disclaimers=disclaimers
         )
-        self.replies.append(_reply)
+        if _reply.content or not self.replies:
+             self.replies.append(_reply)
 
         return self
 

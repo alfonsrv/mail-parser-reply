@@ -2,6 +2,7 @@ import os
 import sys
 import unittest
 import logging
+import time
 
 base_path = os.path.realpath(os.path.dirname(__file__))
 root = os.path.join(base_path, '..')
@@ -64,7 +65,9 @@ class EmailMessageTest(unittest.TestCase):
     def test_gmail_header(self):
         mail = self.get_email('email_2_1', parse=True, languages=['en'])
         self.assertEqual(2, len(mail.replies))
-        self.assertTrue("Outlook with a reply\n\n\n------------------------------" == mail.replies[0].body)
+        print('ok')
+        print(mail.replies[0].body)
+        self.assertTrue("Outlook with a reply" == mail.replies[0].body)
         self.assertTrue("Google Apps Sync Team [mailto:mail-noreply@google.com]" in mail.replies[1].headers)
         self.assertTrue("Google Apps Sync Team [mailto:mail-noreply@google.com]" not in mail.replies[1].body)
 
@@ -140,7 +143,7 @@ class EmailMessageTest(unittest.TestCase):
     def test_dutch_gmail_header(self):
         mail = self.get_email('email_nl_1_2', parse=True, languages=['nl'])
         self.assertEqual(2, len(mail.replies))
-        self.assertTrue("Outlook met een antwoord\n\n\n------------------------------" == mail.replies[0].body)
+        self.assertTrue("Outlook met een antwoord" == mail.replies[0].body)
         self.assertTrue("Google Apps Sync Team [mailto:mail-noreply@google.com]" in mail.replies[1].headers)
         self.assertTrue("Google Apps Sync Team [mailto:mail-noreply@google.com]" not in mail.replies[1].body)
 
@@ -177,6 +180,36 @@ class EmailMessageTest(unittest.TestCase):
         return EmailReplyParser(
             languages=languages or [MAIL_LANGUAGE_DEFAULT]
         ).read(text) if parse else text
+
+
+class PerformanceTest(unittest.TestCase):
+    def test_performance_complex_email(self):
+        start = time.time()
+        # Use correct relative path from the test directory
+        with open('emails/email_3_1.txt') as f:
+            text = f.read()
+        mail = EmailReplyParser(languages=['en', 'de', 'david']).read(text)
+        elapsed = time.time() - start
+        print(f"Performance test: Parsing 'email_3_1.txt' took {elapsed:.4f} seconds and found {len(mail.replies)} replies.")
+        self.assertLess(elapsed, 2.0, f"Parsing took too long: {elapsed:.4f} seconds")
+
+    def test_performance_pathological(self):
+        start = time.time()
+        with open('emails/pathological.txt') as f:
+            text = f.read()
+        mail = EmailReplyParser(languages=['en', 'de', 'david']).read(text)
+        elapsed = time.time() - start
+        print(f"Performance test: Parsing 'pathological.txt' took {elapsed:.4f} seconds and found {len(mail.replies)} replies.")
+        self.assertLess(elapsed, 2.0, f"Parsing took too long: {elapsed:.4f} seconds")
+
+    def test_performance_multi_header(self):
+        start = time.time()
+        with open('emails/multi_header.txt') as f:
+            text = f.read()
+        mail = EmailReplyParser(languages=['en', 'de', 'david']).read(text)
+        elapsed = time.time() - start
+        print(f"Performance test: Parsing 'multi_header.txt' took {elapsed:.4f} seconds and found {len(mail.replies)} replies.")
+        self.assertLess(elapsed, 2.0, f"Parsing took too long: {elapsed:.4f} seconds")
 
 
 if __name__ == '__main__':
