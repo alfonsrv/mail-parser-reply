@@ -65,7 +65,6 @@ class EmailMessageTest(unittest.TestCase):
     def test_gmail_header(self):
         mail = self.get_email('email_2_1', parse=True, languages=['en'])
         self.assertEqual(2, len(mail.replies))
-        print('ok')
         print(mail.replies[0].body)
         self.assertTrue("Outlook with a reply" == mail.replies[0].body)
         self.assertTrue("Google Apps Sync Team [mailto:mail-noreply@google.com]" in mail.replies[1].headers)
@@ -181,7 +180,6 @@ class EmailMessageTest(unittest.TestCase):
             languages=languages or [MAIL_LANGUAGE_DEFAULT]
         ).read(text) if parse else text
 
-
 class PerformanceTest(unittest.TestCase):
     def test_performance_complex_email(self):
         start = time.time()
@@ -210,6 +208,7 @@ class PerformanceTest(unittest.TestCase):
         elapsed = time.time() - start
         print(f"Performance test: Parsing 'multi_header.txt' took {elapsed:.4f} seconds and found {len(mail.replies)} replies.")
         self.assertLess(elapsed, 2.0, f"Parsing took too long: {elapsed:.4f} seconds")
+
 
 
 if __name__ == '__main__':
