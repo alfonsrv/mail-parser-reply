@@ -138,9 +138,9 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         'sent_from': r'Enviado desde mi.*',
     },
     'fr': {
-        'wrote_header': r'(?!Le.*Le\s.+?a \u00e9crit[a-zA-Z0-9.:;<>()&@ -]*:)('
+        'wrote_header': r'^(?!Le.*Le\s.+?a \u00e9crit[a-zA-Z0-9.:;<>()&@ -]*:)('
                         + QUOTED_MATCH_INCLUDE
-                        + r'Le\s(.+?)a \u00e9crit[a-zA-Z0-9.:;<>()&@ -]*:)',
+                        + r'Le\s(.+?)a \u00e9crit[a-zA-Z0-9.:;<>()&@ -]*:)$',
         'from_header': r'((?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE
                        + r')[* ]*(?:De |Envoy\u00e9 |\u00C0 |Objet |  |Cc ):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
