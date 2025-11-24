@@ -12,6 +12,7 @@ headers produced by different, multilingual clients usually indicating separatio
 Replies can either present the whole mail message body, or strip headers, signatures and common disclaimers if required.
 Currently supported languages are:
 
+- Danish (`da`) 🇩🇰
 - Dutch (`nl`) 🇳🇱
 - English (`en`) 🇬🇧
 - French (`fr`) 🇫🇷
