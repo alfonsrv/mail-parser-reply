@@ -211,6 +211,44 @@ class EmailMessageTest(unittest.TestCase):
         self.assertIn("Kan inte se att det står något", mail.replies[1].body)
         self.assertIn("Jag har försökt få tag", mail.replies[2].body)
 
+    def test_danish_simple_body(self):
+        mail = self.get_email('email_danish_1', parse=True, languages=['da'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertTrue("Hej Peter," in mail.replies[0].body)
+        self.assertTrue("Med venlig hilsen\nAnders Andersen" in mail.replies[0].signatures)
+        self.assertTrue("Med venlig hilsen\nAnders Andersen" not in mail.replies[0].body)
+        self.assertTrue("Hej Anders," in mail.replies[1].body)
+        self.assertTrue("> Mvh\n> Peter" in mail.replies[1].signatures)
+
+    def test_danish_outlook_header(self):
+        mail = self.get_email('email_danish_2', parse=True, languages=['da'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertTrue("Jeg har modtaget filerne." in mail.replies[0].body)
+        self.assertTrue("Hilsen\nSøren" in mail.replies[0].signatures)
+        self.assertTrue("Her er filerne du bad om." in mail.replies[1].body)
+        self.assertTrue("Mvh\nHanne" in mail.replies[1].signatures)
+
+    def test_danish_gmail_header(self):
+        mail = self.get_email('email_danish_3', parse=True, languages=['da'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("Svar.", mail.replies[0].body)
+        self.assertIn("Hej", mail.replies[1].body)
+
+    def test_danish_outlook_separator(self):
+        mail = self.get_email('email_danish_4', parse=True, languages=['da'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("Svar.", mail.replies[0].body)
+        # Verify separator is removed/handled
+        self.assertNotIn("-----Oprindelig meddelelse-----", mail.replies[0].body)
+        self.assertIn("Hej", mail.replies[1].body)
+
+    def test_danish_signatures_short(self):
+        mail = self.get_email('email_danish_5', parse=True, languages=['da'])
+        self.assertEqual(1, len(mail.replies))
+        self.assertIn("Svar.", mail.replies[0].body)
+        self.assertIn("Kh\nPeter", mail.replies[0].signatures)
+        self.assertNotIn("Kh\nPeter", mail.replies[0].body)
+
     def get_email(self, name: str, parse: bool = True, languages: list = None):
         """ Return EmailMessage instance or text content """
         with open(f'test/emails/{name}.txt', encoding='utf-8') as f:

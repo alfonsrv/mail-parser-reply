@@ -3,36 +3,34 @@
 [![Python](https://img.shields.io/badge/Made%20with-Python%203.x-blue.svg?style=flat-square&logo=Python&logoColor=white)](https://www.python.org/)
 [![Version](https://img.shields.io/badge/Version-1.3-dc2f02.svg?style=flat-square&logoColor=white)](https://github.com/alfonsrv/mail-parser-reply)
 
-
 ### Multi-language email reply parsing for international environments 🌍
 
 Mail clients handle reply formatting differently, making reliable parsing difficult. Thank god we have
-[standards](https://xkcd.com/927/).  This library splits *text-based* emails into separate replies based on common
+[standards](https://xkcd.com/927/). This library splits _text-based_ emails into separate replies based on common
 headers produced by different, multilingual clients usually indicating separation.
 
 Replies can either present the whole mail message body, or strip headers, signatures and common disclaimers if required.
 Currently supported languages are:
 
-* Dutch (`nl`) 🇳🇱
-* English (`en`) 🇬🇧
-* French (`fr`) 🇫🇷
-* German (`de`) 🇩🇪
-* Italian (`it`) 🇮🇹
-* Japanese (`ja`) 🇯🇵
-* Polish (`pl`) 🇵🇱
-* Swedish (`sv`) 🇸🇪
-* Czech (`cs`) 🇨🇿 (untested - contributions welcome!)
-* Spanish (`es`) 🇪🇸 (untested - contributions welcome!)
-* Korean (`ko`) 🇰🇷 (untested - contributions welcome!)
-* Chinese (`zh`) 🇨🇳 (untested - contributions welcome!)
-
+- Danish (`da`) 🇩🇰
+- Dutch (`nl`) 🇳🇱
+- English (`en`) 🇬🇧
+- French (`fr`) 🇫🇷
+- German (`de`) 🇩🇪
+- Italian (`it`) 🇮🇹
+- Japanese (`ja`) 🇯🇵
+- Polish (`pl`) 🇵🇱
+- Swedish (`sv`) 🇸🇪
+- Czech (`cs`) 🇨🇿 (untested - contributions welcome!)
+- Spanish (`es`) 🇪🇸 (untested - contributions welcome!)
+- Korean (`ko`) 🇰🇷 (untested - contributions welcome!)
+- Chinese (`zh`) 🇨🇳 (untested - contributions welcome!)
 
 🏳️‍🌈 **Adding more languages is quite easy!**
 
 This is an improved Python implementation of GitHub's Ruby-based [email_reply_parser](https://github.com/github/email_reply_parser/)
 and an adaptation of Zapier's [email-reply-parser](https://github.com/zapier/email-reply-parser) which both split the
 mails in fragments instead of distinct replies. They also only support English.
-
 
 ## ⭐ Features
 
@@ -41,8 +39,7 @@ mails in fragments instead of distinct replies. They also only support English.
 ⭐ Text-based mail parsing  
 ⭐ Detect headers, signatures and disclaimers  
 ⭐ Fully type annotated  
-⭐ Easy-to-read code and well-tested  
-
+⭐ Easy-to-read code and well-tested
 
 ## Overview 🔭
 
@@ -69,13 +66,18 @@ Into just the replied text content:
 Awesome! I haven't had another problem with it.
 ```
 
-
 ## Get started 👾
 
 ### Installation
 
 ```bash
 pip install mail-parser-reply
+```
+
+### Run tests
+
+```bash
+python -m unittest discover test
 ```
 
 ### Parse Replies
@@ -88,12 +90,11 @@ mail_message = EmailReplyParser(languages=languages).read(text=mail_body)
 print(mail_message.replies)
 ```
 
-*Or* get only the latest reply using:
+_Or_ get only the latest reply using:
 
 ```python
 latest_reply = EmailReplyParser(languages=languages).parse_reply(text=mail_body)
 ```
-
 
 ### Parser API
 
@@ -123,8 +124,6 @@ EmailReply.headers:              Identified Headers
 EmailReply.signatures:           Identified Signatures
 EmailReply.disclaimers:          Identified disclaimers
 ```
-
-
 
 ---
 

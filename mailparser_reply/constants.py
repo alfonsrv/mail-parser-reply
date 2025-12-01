@@ -114,6 +114,35 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         ],
         'sent_from': r'Odesláno z mého.*',
     },
+    'da': {
+        'wrote_header': r"^(?!Den[.\s]*Den\s(.+?)\sskrev:)("
+                        + QUOTED_MATCH_INCLUDE
+                        + r"(?:Den|[Mm]an|[Tt]ir|[Oo]ns|[Tt]or|[Ff]re|[Ll]ør|[Ss]øn|[0-9]).+?\sskrev\s.+?:)$",
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')?-----Oprindelig meddelelse-----\n)?(?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:[Ff]ra|[Ss]endt|[Tt]il|[Ee]mne|[Dd]ato|[Cc]c|[Kk]opi|[Vv]edhæftet):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            'Advarsel:',
+            'Bemærk:',
+            'Fortroligt:',
+        ],
+        'signatures': [
+            'Med venlig hilsen',
+            'Venlig hilsen',
+            'Hilsen',
+            'Mvh',
+            'Dbh',
+            'Bedste hilsner',
+            'De bedste hilsner',
+            'Kh',
+            'Knus',
+            'Tak',
+            'På forhånd tak',
+        ],
+        'sent_from': 'Sendt fra min|Sendt fra|Hent Outlook til|Sendt fra Outlook',
+    },
     'es': {
         'wrote_header': r'^(?!El\s.+\s escribió:)('
                         + QUOTED_MATCH_INCLUDE
