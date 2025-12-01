@@ -6,25 +6,25 @@
 ### Multi-language email reply parsing for international environments 🌍
 
 Mail clients handle reply formatting differently, making reliable parsing difficult. Thank god we have
-[standards](https://xkcd.com/927/). This library splits _text-based_ emails into separate replies based on common
+[standards](https://xkcd.com/927/). This library splits *text-based* emails into separate replies based on common
 headers produced by different, multilingual clients usually indicating separation.
 
 Replies can either present the whole mail message body, or strip headers, signatures and common disclaimers if required.
 Currently supported languages are:
 
-- Danish (`da`) 🇩🇰
-- Dutch (`nl`) 🇳🇱
-- English (`en`) 🇬🇧
-- French (`fr`) 🇫🇷
-- German (`de`) 🇩🇪
-- Italian (`it`) 🇮🇹
-- Japanese (`ja`) 🇯🇵
-- Polish (`pl`) 🇵🇱
-- Swedish (`sv`) 🇸🇪
-- Czech (`cs`) 🇨🇿 (untested - contributions welcome!)
-- Spanish (`es`) 🇪🇸 (untested - contributions welcome!)
-- Korean (`ko`) 🇰🇷 (untested - contributions welcome!)
-- Chinese (`zh`) 🇨🇳 (untested - contributions welcome!)
+* Danish (`da`) 🇩🇰
+* Dutch (`nl`) 🇳🇱
+* English (`en`) 🇬🇧
+* French (`fr`) 🇫🇷
+* German (`de`) 🇩🇪
+* Italian (`it`) 🇮🇹
+* Japanese (`ja`) 🇯🇵
+* Polish (`pl`) 🇵🇱
+* Swedish (`sv`) 🇸🇪
+* Czech (`cs`) 🇨🇿 (untested - contributions welcome!)
+* Spanish (`es`) 🇪🇸 (untested - contributions welcome!)
+* Korean (`ko`) 🇰🇷 (untested - contributions welcome!)
+* Chinese (`zh`) 🇨🇳 (untested - contributions welcome!)
 
 🏳️‍🌈 **Adding more languages is quite easy!**
 
@@ -90,7 +90,7 @@ mail_message = EmailReplyParser(languages=languages).read(text=mail_body)
 print(mail_message.replies)
 ```
 
-_Or_ get only the latest reply using:
+*Or* get only the latest reply using:
 
 ```python
 latest_reply = EmailReplyParser(languages=languages).parse_reply(text=mail_body)
