@@ -148,6 +148,29 @@ class EmailMessageTest(unittest.TestCase):
         self.assertTrue("かしこまりました" in mail.replies[1].body)
         self.assertTrue("明日の 11:00 でお願いいたします" in mail.replies[1].body)
 
+    def test_zh_name_before_date_quoted_reply(self):
+        mail = self.get_email('email_zh_1', parse=True, languages=['zh'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertTrue("周末聚会的时间和地点我这边已经整理好了" in mail.replies[0].body)
+        self.assertTrue("雨州 <yuzhou.liu@example.com> 在 2026年2月29日 周六 19:47 写道：" not in mail.replies[0].body)
+        self.assertTrue("——————————————————————————————" not in mail.replies[0].body)
+        self.assertEqual(
+            "雨州 <yuzhou.liu@example.com> 在 2026年2月29日 周六 19:47 写道：",
+            mail.replies[1].headers
+        )
+        self.assertTrue("大家好，这周末想组织一次轻松的线下聚会" in mail.replies[1].body)
+
+    def test_zh_date_first_quoted_reply(self):
+        mail = self.get_email('email_zh_2', parse=True, languages=['zh'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertTrue("我这边没有别的补充了" in mail.replies[0].body)
+        self.assertTrue("2026年2月29日 周六 19:47 雨州 <yuzhou.liu@example.com> 写道：" not in mail.replies[0].body)
+        self.assertEqual(
+            "2026年2月29日 周六 19:47 雨州 <yuzhou.liu@example.com> 写道：",
+            mail.replies[1].headers
+        )
+        self.assertTrue("大家好，这周末想组织一次轻松的线下聚会" in mail.replies[1].body)
+
 
     # Dutch language
     def test_dutch_simple_body(self):
@@ -256,7 +279,6 @@ class EmailMessageTest(unittest.TestCase):
         return EmailReplyParser(
             languages=languages or [MAIL_LANGUAGE_DEFAULT]
         ).read(text) if parse else text
-
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)

@@ -14,7 +14,7 @@ QUOTED_MATCH_INCLUDE = r'(?:> ?)*'
 
 #: Outlook-style mail separator (32 underscores); also occasionally
 #: used within signatures
-OUTLOOK_MAIL_SEPARATOR = r'(\n{2,} ?[_-]{32,})'
+OUTLOOK_MAIL_SEPARATOR = r'(\n{1,} ?(?:[_-]{32,}|[\u2012\u2013\u2014\u2015]{20,}))'
 #: Common mail separators (+ old Outlook separator)
 GENERIC_MAIL_SEPARATOR = r'^-{5,} ?Original Message ?-{5,}$'
 
@@ -284,9 +284,9 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
                        + r')[* ]*(?:Från|Skickat|Till|Ämne|Datum|Kopia):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
     },
     'zh': {
-        'wrote_header': r'^(?!.*\d{4}年\d{1,2}月\d{1,2}日.*?写道：)('
+        'wrote_header': r'^(?!.*(?:.+?\s*在\s*)?\d{4}年\d{1,2}月\d{1,2}日.*?写道：.*(?:.+?\s*在\s*)?\d{4}年\d{1,2}月\d{1,2}日.*?写道：)('
                         + QUOTED_MATCH_INCLUDE
-                        + r'\d{4}年\d{1,2}月\d{1,2}日.*?写道：)$',
+                        + r'(?:.+?\s*在\s*)?\d{4}年\d{1,2}月\d{1,2}日.*?写道：)$',
         'from_header': r'((?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE
                        + r')[* ]*(?:发件人|发送时间|收件人|主题|抄送|组织):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
