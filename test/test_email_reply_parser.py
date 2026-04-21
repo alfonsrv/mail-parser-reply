@@ -88,6 +88,11 @@ class EmailMessageTest(unittest.TestCase):
         self.assertTrue("Google Apps Sync Team [mailto:mail-noreply@google.com]" in mail.replies[1].headers)
         self.assertTrue("Google Apps Sync Team [mailto:mail-noreply@google.com]" not in mail.replies[1].body)
 
+    def test_outlook_reply_directly_above_line(self):
+        mail = self.get_email('email_2_2', parse=True, languages=['en'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertEqual("Outlook with a reply directly above line", mail.replies[0].body)
+
     def test_gmail_indented(self):
         mail = self.get_email('email_2_3', parse=True, languages=['en'])
         self.assertEqual(2, len(mail.replies))
