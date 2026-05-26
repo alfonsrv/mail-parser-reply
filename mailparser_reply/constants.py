@@ -73,6 +73,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             'All the best',
             'regards,',
         ],
+        'gmail_wrap_start': r'On',
+        'gmail_wrap_keyword': r'wrote',
         'sent_from': 'Sent from my|Get Outlook for',
     },
     'de': {
@@ -91,6 +93,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             r'Mit freundlichen Gr\u00fc\u00DFen / (?:Best|Kind) regards,',
             r'(?:(?:Beste(?:n)?|Liebe|Viele) )?(?:Gr(?:\u00fc|ue)(?:\u00DF|ss)(?:e)?|Gru\u00DF|Gruss)',
         ],
+        'gmail_wrap_start': r'Am',
+        'gmail_wrap_keyword': r'schrieb',
         'sent_from': 'Gesendet von',
     },
     'cs': {
@@ -112,6 +116,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             'Děkujeme,',
             'S přáním hezkého dne,',
         ],
+        'gmail_wrap_start': r'Dne',
+        'gmail_wrap_keyword': r'napsal\(a\)',
         'sent_from': r'Odesláno z mého.*',
     },
     'da': {
@@ -141,6 +147,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             'Tak',
             'På forhånd tak',
         ],
+        'gmail_wrap_start': r'Den',
+        'gmail_wrap_keyword': r'skrev',
         'sent_from': 'Sendt fra min|Sendt fra|Hent Outlook til|Sendt fra Outlook',
     },
     'es': {
@@ -164,6 +172,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             'Cordialmente,',
             'Muchas gracias,',
         ],
+        'gmail_wrap_start': r'El',
+        'gmail_wrap_keyword': r'escribi[oó]',
         'sent_from': r'Enviado desde mi.*',
     },
     'fr': {
@@ -179,6 +189,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             r'bonne r[\u00e9e]ception',
             r'bonne journ[\u00e9e]e',
         ],
+        'gmail_wrap_start': r'Le',
+        'gmail_wrap_keyword': r'a [eé]crit',
         'sent_from': r'Envoy\u00e9 depuis',
     },
     'it': {
@@ -191,6 +203,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         'signatures': [
             'Cordiali saluti',
         ],
+        'gmail_wrap_start': r'Il',
+        'gmail_wrap_keyword': r'ha scritto',
         'sent_from': 'Inviato da',
     },
     'ja': {
@@ -242,6 +256,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             'Bedankt,',
             'Dank u,',
         ],
+        'gmail_wrap_start': r'Op',
+        'gmail_wrap_keyword': r'schreef',
         'sent_from': 'Verzonden vanaf mijn',
     },
     'pl': {
@@ -263,9 +279,15 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         'sent_from': 'Wysłano z'
     },
     'sv': {
+        # Matches both the single-line "Den ... skrev <sender>:" form and the
+        # wrapped Gmail form where the header runs onto a second line ending
+        # in just "skrev:" (no sender on the same line). The wrap is allowed
+        # via "(?:\n[ \t]*)?" and the sender between "skrev" and ":" is
+        # optional so a bare "skrev:" on its own line also matches.
         'wrote_header': r"^(?!Den[.\s]*Den\s(.+?\s?.+?)\skrev:)("
                         + QUOTED_MATCH_INCLUDE
-                        + r"(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön|(?:[0-9]+\s+(?:jan|feb|mar|apr|maj|jun|jul|aug|sep|okt|nov|dec)))[^\n]*skrev\s(?:.+?\s?.+?):)$",
+                        + r"(?:Den|[Mm]ån|[Tt]is|[Oo]ns|[Tt]or|[Ff]re|[Ll]ör|[Ss]ön|(?:[0-9]+\s+(?:jan|feb|mar|apr|maj|jun|jul|aug|sep|okt|nov|dec)))"
+                        + r"[^\n]*?(?:\n[ \t]*)?skrev[ \t]*(?:[^\n:]*?)?:)$",
         'disclaimers': [
             'Varning:',
             'Observera:',
@@ -278,6 +300,8 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
             'Mvh',
             r'/\w+',  # To match /John, /Anna, etc.
         ],
+        'gmail_wrap_start': r'Den',
+        'gmail_wrap_keyword': r'skrev',
         'sent_from': 'Skickat från min',
         'from_header': r'((?:(?:^|\n|\n'
                        + QUOTED_MATCH_INCLUDE

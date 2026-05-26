@@ -191,11 +191,18 @@ class EmailMessageTest(unittest.TestCase):
         self.assertTrue(mail.replies[0].signatures. startswith("Regards,"))
 
     def test_swedish_simple_body(self):
+        # email_swedish_2 ends with a wrapped Gmail header
+        # "Den fre 28 feb. 2025 10:15Anna Andersson <…> skrev:" with no sender
+        # between "skrev" and ":" — the old SV pattern required content there
+        # and so left the whole thing as one reply. With the fix the header is
+        # recognised and we get John's reply + Anna's quoted original as two
+        # replies.
         mail = self.get_email('email_swedish_2', parse=True, languages=['sv'])
-        self.assertEqual(1, len(mail.replies))
+        self.assertEqual(2, len(mail.replies))
         self.assertTrue("Hello Anna," in mail.replies[0].body)
         self.assertTrue("/John" in mail.replies[0].signatures)
         self.assertTrue("/John" not in mail.replies[0].body)
+        self.assertIn("Hej John", mail.replies[1].body)
 
     def test_swedish_quoted_reply(self):
         mail = self.get_email('email_swedish_1', parse=True, languages=['sv'])
@@ -210,6 +217,19 @@ class EmailMessageTest(unittest.TestCase):
         self.assertIn("Berättar gärna.", mail.replies[0].body)
         self.assertIn("Kan inte se att det står något", mail.replies[1].body)
         self.assertIn("Jag har försökt få tag", mail.replies[2].body)
+
+    def test_sv_wrapped_gmail_header(self):
+        """Gmail wraps long quote headers across two lines so ``skrev:`` ends
+        up alone on the next line (``Den ... <email>\\nskrev:``). The
+        cross-language ``GMAIL_WRAPPED_HEADER`` catches this layout."""
+        mail = self.get_email('email_swedish_3', parse=True, languages=['sv'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("Hej Anna,", mail.replies[0].body)
+        # "/B" is a Swedish-style sign-off → goes to signatures, not body.
+        self.assertIn("/B", mail.replies[0].signatures)
+        self.assertNotIn("/B", mail.replies[0].body)
+        self.assertNotIn("Förslaget verkar passa bra", mail.replies[0].body)
+        self.assertIn("Förslaget verkar passa bra", mail.replies[1].body)
 
     def test_danish_simple_body(self):
         mail = self.get_email('email_danish_1', parse=True, languages=['da'])
@@ -256,6 +276,88 @@ class EmailMessageTest(unittest.TestCase):
         return EmailReplyParser(
             languages=languages or [MAIL_LANGUAGE_DEFAULT]
         ).read(text) if parse else text
+
+
+    # ------------------------------------------------------------------
+    # Cross-language Gmail-wrapped quote headers (GMAIL_WRAPPED_HEADER).
+    # All fixtures are fully synthetic — no real names, emails, or content.
+    # ------------------------------------------------------------------
+
+    def test_en_wrapped_gmail_header(self):
+        mail = self.get_email('email_en_wrap', parse=True, languages=['en'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("Thanks for the offer", mail.replies[0].body)
+        self.assertNotIn("the role i mentioned", mail.replies[0].body.lower())
+        self.assertIn("the role i mentioned", mail.replies[1].body.lower())
+
+    def test_de_wrapped_gmail_header(self):
+        mail = self.get_email('email_de_wrap', parse=True, languages=['de'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("danke für die Nachricht", mail.replies[0].body)
+        self.assertNotIn("die Stelle ist wieder offen", mail.replies[0].body)
+        self.assertIn("die Stelle ist wieder offen", mail.replies[1].body)
+
+    def test_fr_wrapped_gmail_header(self):
+        mail = self.get_email('email_fr_wrap', parse=True, languages=['fr'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("Merci pour votre message", mail.replies[0].body)
+        self.assertNotIn("le poste est de nouveau ouvert", mail.replies[0].body)
+        self.assertIn("le poste est de nouveau ouvert", mail.replies[1].body)
+
+    def test_es_wrapped_gmail_header(self):
+        mail = self.get_email('email_es_wrap', parse=True, languages=['es'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("Gracias por escribirme", mail.replies[0].body)
+        self.assertNotIn("el puesto vuelve a estar abierto", mail.replies[0].body)
+        self.assertIn("el puesto vuelve a estar abierto", mail.replies[1].body)
+
+    def test_it_wrapped_gmail_header(self):
+        mail = self.get_email('email_it_wrap', parse=True, languages=['it'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("grazie per il messaggio", mail.replies[0].body)
+        self.assertNotIn("la posizione è di nuovo aperta", mail.replies[0].body)
+        self.assertIn("la posizione è di nuovo aperta", mail.replies[1].body)
+
+    def test_nl_wrapped_gmail_header(self):
+        mail = self.get_email('email_nl_wrap', parse=True, languages=['nl'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("dank voor je bericht", mail.replies[0].body)
+        self.assertNotIn("de positie is weer open", mail.replies[0].body)
+        self.assertIn("de positie is weer open", mail.replies[1].body)
+
+    def test_da_wrapped_gmail_header(self):
+        mail = self.get_email('email_da_wrap', parse=True, languages=['da'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("vilkårene lyder fornuftige", mail.replies[0].body)
+        self.assertNotIn("stillingen er åben igen", mail.replies[0].body)
+        self.assertIn("stillingen er åben igen", mail.replies[1].body)
+
+    def test_cs_wrapped_gmail_header(self):
+        mail = self.get_email('email_cs_wrap', parse=True, languages=['cs'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("děkuji za zprávu", mail.replies[0].body)
+        self.assertNotIn("pozice je opět otevřená", mail.replies[0].body)
+        self.assertIn("pozice je opět otevřená", mail.replies[1].body)
+
+    # ------------------------------------------------------------------
+    # Wrap-INSIDE-recipient variant: for verb-in-middle languages (sv, da,
+    # de) Gmail can also wrap inside the recipient's "<…>" bracket, putting
+    # the trailing ":" alone on the next line. Different shape, same cause.
+    # ------------------------------------------------------------------
+
+    def test_sv_wrapped_gmail_header_inside_recipient(self):
+        mail = self.get_email('email_sv_wrap', parse=True, languages=['sv'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("tack för meddelandet", mail.replies[0].body)
+        self.assertNotIn("tjänsten är öppen igen", mail.replies[0].body)
+        self.assertIn("tjänsten är öppen igen", mail.replies[1].body)
+
+    def test_de_wrapped_gmail_header_inside_recipient(self):
+        mail = self.get_email('email_de_wrap_inside', parse=True, languages=['de'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("danke für die Nachricht", mail.replies[0].body)
+        self.assertNotIn("die Stelle ist wieder offen", mail.replies[0].body)
+        self.assertIn("die Stelle ist wieder offen", mail.replies[1].body)
 
 
 if __name__ == '__main__':
