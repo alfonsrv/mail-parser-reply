@@ -1,0 +1,28 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # "3" = latest available CPython 3.x on the runner. No minor pin to
+        # maintain. Replace with concrete versions if you want to lock or broaden.
+        python-version:
+          - "3"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - run: pip install . pytest
+
+      - run: python -m pytest test/ -v
