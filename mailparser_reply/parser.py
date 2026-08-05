@@ -166,7 +166,7 @@ class EmailMessage:
         # In order to ensure that these fragments are split correctly, make sure that all lines
         # of underscores are preceded by at least two newline characters.
         #   See email_2_2.txt for an example
-        self.text = re.sub(f'([^\n]){OUTLOOK_MAIL_SEPARATOR}', '\\1\n', self.text, re.MULTILINE)
+        self.text = re.sub(f'([^\n]){OUTLOOK_MAIL_SEPARATOR}', '\\1\n', self.text, flags=re.MULTILINE)
 
     def _process_signatures_disclaimers(self, text: str) -> Tuple[List[str], str]:
         """ Identifies Signature Elements and Disclaimers """
