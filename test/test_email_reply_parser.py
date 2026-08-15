@@ -211,6 +211,42 @@ class EmailMessageTest(unittest.TestCase):
         self.assertIn("Kan inte se att det står något", mail.replies[1].body)
         self.assertIn("Jag har försökt få tag", mail.replies[2].body)
 
+    def test_hungarian_gmail_quoted_reply(self):
+        mail = self.get_email('email_hu_1', parse=True, languages=['hu'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("Az uj beallitasokat feltoltottem", mail.replies[0].body)
+        self.assertNotIn("meg tudnad nezni", mail.replies[0].body)
+        self.assertIn("meg tudnad nezni", mail.replies[1].body)
+
+    def test_hungarian_gmail_parenthesised_timestamp(self):
+        """Gmail puts the timestamp between the verb and the colon:
+        '... ezt írta (időpont: 2026. aug. 16., Ke 12:27):'"""
+        mail = self.get_email('email_hu_2', parse=True, languages=['hu'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("minden rendben van igy", mail.replies[0].body)
+        self.assertNotIn("tranzakciot sikeresen", mail.replies[0].body)
+
+    def test_hungarian_outlook_headers(self):
+        mail = self.get_email('email_hu_3', parse=True, languages=['hu'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("csutortokon egyeztetunk", mail.replies[0].body)
+        self.assertNotIn("Surgos lenne", mail.replies[0].body)
+
+    def test_hungarian_thunderbird_header(self):
+        mail = self.get_email('email_hu_4', parse=True, languages=['hu'])
+        self.assertEqual(2, len(mail.replies))
+        self.assertIn("A dokumentumot atneztem", mail.replies[0].body)
+        self.assertNotIn("kerlek nezd at", mail.replies[0].body)
+
+    def test_hungarian_signature_without_accents(self):
+        """Hungarian is frequently typed without accents, and older clients
+        send iso-8859-2 that decodes badly, so both forms must match."""
+        mail = self.get_email('email_hu_5', parse=True, languages=['hu'])
+        self.assertEqual(1, len(mail.replies))
+        self.assertIn("a jelentes elkeszult", mail.replies[0].body)
+        self.assertIn("Udv", mail.replies[0].signatures)
+        self.assertNotIn("Udv", mail.replies[0].body)
+
     def test_danish_simple_body(self):
         mail = self.get_email('email_danish_1', parse=True, languages=['da'])
         self.assertEqual(2, len(mail.replies))

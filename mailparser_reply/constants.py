@@ -181,6 +181,48 @@ MAIL_LANGUAGES: Dict[str, Dict[str, str]] = {
         ],
         'sent_from': r'Envoy\u00e9 depuis',
     },
+    'hu': {
+        # Hungarian clients put the verb "irta" ("wrote") last, and Gmail has
+        # two shapes for it:
+        #   2026. jan. 5., h 14:32 idopontban Nagy Bela <anna@example.hu> ezt irta:
+        #   Nagy Bela <anna@example.hu> ezt irta (idopont: 2026. aug. 16., Ke 12:27):
+        # The second puts a parenthesised timestamp between the verb and the
+        # colon, so the colon cannot be anchored directly to the verb.
+        # Thunderbird uses "... keltezessel, Nagy Bela a kovetkezot irta:".
+        #
+        # Accented letters are matched as classes containing their ASCII
+        # fold, as in the French patterns above: Hungarian mail is often
+        # typed without accents, and older clients send iso-8859-2 that
+        # decodes badly.
+        'wrote_header': r'^(?!.*[\u00edi]rta.*[\u00edi]rta)('
+                        + QUOTED_MATCH_INCLUDE
+                        + r'(?:\d{4}\.|[A-Z\u00c1\u00c9\u00cd\u00d3\u00d6\u0150\u00da\u00dc\u0170])'
+                          r'.+?\s(?:ezt\s|a\s+k[\u00f6o]vetkez[\u0151o]t\s)?'
+                          r'[\u00edi]rta\s*(?:\([^)]*\))?\s*:)$',
+        'from_header': r'((?:(?:^|\n|\n'
+                       + QUOTED_MATCH_INCLUDE
+                       + r')[* ]*(?:Felad[\u00f3o]|Elk[\u00fcu]ldve|C[\u00edi]mzett'
+                         r'|T[\u00e1a]rgy|D[\u00e1a]tum|M[\u00e1a]solatot kap'
+                         r'|M[\u00e1a]solat|Szervezet):[ *]*(?:\s{,2}).*){2,}(?:\n.*){,1})',
+        'disclaimers': [
+            'Figyelem:',
+            'Jogi nyilatkozat:',
+            'Bizalmas:',
+            'Titoktart[\u00e1a]si nyilatkozat:',
+        ],
+        'signatures': [
+            r'Bar[\u00e1a]ti [\u00fcu]dv[\u00f6o]zlettel',
+            r'[\u00dcU]dv[\u00f6o]zlettel',
+            'Tisztelettel',
+            r'K[\u00f6o]sz[\u00f6o]nettel',
+            r'K[\u00f6o]sz[\u00f6o]n[\u00f6o]m',
+            r'Minden j[\u00f3o]t',
+            r'Sz[\u00e9e]p napot',
+            r'[\u00dcU]dv',
+        ],
+        'sent_from': r'Elk[\u00fcu]ldve az? |K[\u00fcu]ldve a(?:z)? '
+                     r'|(?:Az )?iPhone-omr[\u00f3o]l k[\u00fcu]ldve',
+    },
     'it': {
         'wrote_header': r'^(?!Il[.\s]*Il\s(.+?\s?.+?)\sha scritto:)('
                         + QUOTED_MATCH_INCLUDE
