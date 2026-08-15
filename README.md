@@ -17,6 +17,7 @@ Currently supported languages are:
 * English (`en`) 🇬🇧
 * French (`fr`) 🇫🇷
 * German (`de`) 🇩🇪
+* Hungarian (`hu`) 🇭🇺
 * Italian (`it`) 🇮🇹
 * Japanese (`ja`) 🇯🇵
 * Polish (`pl`) 🇵🇱

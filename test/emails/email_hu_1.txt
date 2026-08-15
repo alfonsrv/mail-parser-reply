@@ -1,0 +1,11 @@
+Szia Bela,
+
+Az uj beallitasokat feltoltottem a szerverre, holnap tudod tesztelni.
+Ha valami nem stimmel, szolj nyugodtan.
+
+Udvozlettel,
+Anna
+
+2026. jan. 5., h 14:32 időpontban Nagy Béla <bela@example.hu> ezt írta:
+Szia Anna, meg tudnad nezni a szerver beallitasait? Ugy tunik, hogy a
+kapcsolat idonkent megszakad, es nem talalom az okat.
