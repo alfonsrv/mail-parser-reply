@@ -99,6 +99,18 @@ class EmailMessageTest(unittest.TestCase):
         mail = self.get_email('email_3_1', parse=True, languages=['en', 'de', 'david'])
         self.assertEqual(5, len(mail.replies))
 
+    def test_outlook_separators_are_normalized_throughout_long_threads(self):
+        text = ''
+        expected = ''
+        for index in range(12):
+            separator = ('_' if index % 2 == 0 else '-') * 40
+            text += f'Reply {index}\n\n{separator}\nQuoted text {index}\n'
+            expected += f'Reply {index}\n\nQuoted text {index}\n'
+
+        mail = EmailMessage(text=text, languages=['en'])
+
+        self.assertEqual(expected, mail.text)
+
     def test_multiline_on(self):
         mail = self.get_email('multiline_on', parse=True, languages=['en', 'de'])
         self.assertEqual(4, len(mail.replies))
